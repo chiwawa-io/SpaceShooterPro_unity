@@ -14,12 +14,14 @@ public class Enemy : MonoBehaviour
     private GameObject _laser;
     [SerializeField]
     private GameObject _enemyDestroyPrefab;
-    //[SerializeField]
-    //private Canvas _canvas;
+    [SerializeField]
+    private UiManager _uiManager;
 
     void Start()
     {
-        //_canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
+
+        if (_uiManager == null) Debug.Log("UI manager on Enemy is null");
     }
     void Update()
     {
@@ -47,13 +49,13 @@ public class Enemy : MonoBehaviour
     {
         if (other.transform.tag== "laser")
         {
-            //_canvas.ScoreUpdate();
+            _uiManager.ScoreUpdate();
             Instantiate(_enemyDestroyPrefab, transform.position, Quaternion.identity);
             Destroy (other.gameObject);
             Destroy(gameObject);
         }
         else if (other.transform.tag == "Player") {
-            //_canvas.ScoreUpdate();
+            _uiManager.ScoreUpdate();
             Instantiate(_enemyDestroyPrefab, transform.position, Quaternion.identity);
             Destroy (gameObject);
         }
