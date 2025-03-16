@@ -19,20 +19,13 @@ public class CanvasScript : MonoBehaviour
     private Text _gameOverText;
     [SerializeField]
     private Text _restartText;
-    [SerializeField]
-    private BossLevelSpawn _bossLevelSpawn;
     private int _bossHp = 1500;
 
 
     void Start()
     {
-        _bossHealth.text = "Boss HP: 2000";
-        
-
-        if (_bossLevelSpawn == null) Debug.Log("SpawnManager on Canvas is NULL");
+        _bossHealth.text = "Boss HP: 1500";
     }
-
-    // Update is called once per frame
     void Update()
     {
         _bossHealth.text = "Boss HP: " + _bossHp;
@@ -43,7 +36,7 @@ public class CanvasScript : MonoBehaviour
         _livesImg.sprite = _liveSprites[currentLives];
         if (currentLives == 0)
         {
-            _bossLevelSpawn.PlayerDead();
+
             _gameOverText.gameObject.SetActive(true);
             _restartText.gameObject.SetActive(true);
         }

@@ -26,7 +26,7 @@ public class BossLevelPlayer : MonoBehaviour
     private AudioClip _powerUpSound;
     private AudioSource _playerAudioSource;
     private CanvasScript _canvasScript;
-    private BossScript _bossScript;
+    private Game_manager _gameManager;
     [SerializeField]
     private float _fireRate = 0.75f;
     private float _canFire = -1f;
@@ -45,10 +45,11 @@ public class BossLevelPlayer : MonoBehaviour
         
         _playerAudioSource = GetComponent<AudioSource>();
         _canvasScript = GameObject.Find("Canvas").GetComponent<CanvasScript>();
-        _bossScript = GameObject.Find("boss").GetComponent<BossScript>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<Game_manager>();
 
         if (_playerAudioSource == null) Debug.Log("AudioSource is null");
         if (_canvasScript == null) Debug.Log("CanvasScript is null");
+        if (_gameManager == null) Debug.Log("GameManager is null");
 
         Mathf.Clamp(_shields, 0, 3f); // making shields limited to three
     }
@@ -100,7 +101,7 @@ public class BossLevelPlayer : MonoBehaviour
         if (_health < 2) _fireLeft.SetActive(true);
         if (_health <= 0)
         {
-
+            _gameManager.PlayerDead();
             Destroy(gameObject);
         }
     }

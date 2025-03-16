@@ -83,7 +83,6 @@ public class Player : MonoBehaviour
         Movement();
         if (Input.GetKey(KeyCode.Space) && Time.time > _canFire) Fire();
 
-        
     }
 
     void Movement()

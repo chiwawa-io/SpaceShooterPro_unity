@@ -15,7 +15,7 @@ public class BossLevelSpawn : MonoBehaviour
     [SerializeField]
     private GameObject _shieldPowerUp;
     private bool _stopSpawn = false;
-    private bool _playerDead = false;
+
     private Vector2 _spawnPos;
 
     void Start()
@@ -23,21 +23,11 @@ public class BossLevelSpawn : MonoBehaviour
         StartWave();
     }
 
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.R) && _playerDead == true) Restart();
-        if (Input.GetKey(KeyCode.Escape)) Application.Quit();
-    }
-
     public void StopSpawn()
     {
         _stopSpawn = true;
     }
 
-    public void PlayerDead()
-    {
-        _playerDead = true;
-    }
 
     
     IEnumerator SpawnTripplePowerUpRoutine()
