@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     private float _laserOffset = 1.05f;
     [SerializeField]
     private float _tripleShotOffset = 0.1f;
-
     
     private SpawnManager _spawnManager;
     [SerializeField]
@@ -33,7 +32,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip _laserSound;
     private AudioSource _playerAudioSource;
-    private Canvas _canvas;
+    private UiManager _uiManager;
 
     [SerializeField]
     private float _fireRate = 0.75f;
@@ -55,7 +54,7 @@ public class Player : MonoBehaviour
     {
         transform.position = new Vector3(0,0,0);
         _playerAudioSource = GetComponent<AudioSource>();
-        _canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
         _spawnManager = GameObject.Find("Spawn_manager").GetComponent<SpawnManager>();
 
         if (_spawnManager == null) Debug.Log("Spawn manager on Player is null");
@@ -69,7 +68,7 @@ public class Player : MonoBehaviour
         if (_shieldVisual == null) Debug.Log("_shieldVisual on Player is null");
 
         if (_laserSound == null) Debug.Log("_laserSound on Player is null");
-        if (_canvas == null) Debug.Log("UI manager on Player is null");
+        if (_uiManager == null) Debug.Log("UI manager on Player is null");
         if (_playerAudioSource == null) Debug.Log("AudioSource on Player is null");
 
     }
@@ -137,7 +136,7 @@ public class Player : MonoBehaviour
         { 
             _health -= 1; 
             IsDeath();
-            _canvas.LivesUpdate(_health); 
+            _uiManager.LivesUpdate(_health); 
         }
         if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false); }
         if (other.transform.tag == "tripleShot") _TrippleShotActive();

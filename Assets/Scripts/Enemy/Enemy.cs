@@ -14,12 +14,12 @@ public class Enemy : MonoBehaviour
     private GameObject _laser;
     [SerializeField]
     private GameObject _enemyDestroyPrefab;
-    [SerializeField]
-    private Canvas _canvas;
+    //[SerializeField]
+    //private Canvas _canvas;
 
     void Start()
     {
-        _canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        //_canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
     }
     void Update()
     {
@@ -47,13 +47,13 @@ public class Enemy : MonoBehaviour
     {
         if (other.transform.tag== "laser")
         {
-            _canvas.ScoreUpdate();
+            //_canvas.ScoreUpdate();
             Instantiate(_enemyDestroyPrefab, transform.position, Quaternion.identity);
             Destroy (other.gameObject);
             Destroy(gameObject);
         }
         else if (other.transform.tag == "Player") {
-            _canvas.ScoreUpdate();
+            //_canvas.ScoreUpdate();
             Instantiate(_enemyDestroyPrefab, transform.position, Quaternion.identity);
             Destroy (gameObject);
         }

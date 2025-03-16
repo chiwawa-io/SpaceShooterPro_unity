@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 
-public class Canvas : MonoBehaviour
+public class UiManager : MonoBehaviour
 {
     [SerializeField]
     private Text _scoreText;
