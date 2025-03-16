@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _health = 3;
     [SerializeField]
+    private int _ammoCount = 15;
+    [SerializeField]
     private float _laserOffset = 1.05f;
     [SerializeField]
     private float _tripleShotOffset = 0.1f;
@@ -86,7 +88,7 @@ public class Player : MonoBehaviour
     {
         Movement();
         if (Input.GetKey(KeyCode.Space) && Time.time > _canFire) Fire();
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint) SprintOn();
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint && _ammoCount > 0) SprintOn();
         if (Input.GetKeyUp(KeyCode.LeftShift)) SprintOff();
 
     }
@@ -107,6 +109,7 @@ public class Player : MonoBehaviour
 
     void Fire() {
         _playerAudioSource.clip = _laserSound;
+        _ammoCount--;
         _laserPosition = new Vector2(transform.position.x, transform.position.y + _laserOffset);
         _trippleShotPos = new Vector2(transform.position.x + _tripleShotOffset, transform.position.y);
         _canFire = Time.time + _fireRate;
