@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _tripleShotOffset = 0.1f;
     
+    private Game_manager _gameManager;
     private SpawnManager _spawnManager;
     [SerializeField]
     private GameObject _laserContainer;
@@ -56,8 +57,10 @@ public class Player : MonoBehaviour
         _playerAudioSource = GetComponent<AudioSource>();
         _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
         _spawnManager = GameObject.Find("Spawn_manager").GetComponent<SpawnManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<Game_manager>();
 
         if (_spawnManager == null) Debug.Log("Spawn manager on Player is null");
+        if (_gameManager == null) Debug.Log("_game_Manager on Player is null");
         
         if (_laserContainer == null) Debug.Log("_laserContainer on Player is null");
         if (_laser == null) Debug.Log("_laser on Player is null");
@@ -71,6 +74,7 @@ public class Player : MonoBehaviour
         if (_uiManager == null) Debug.Log("UI manager on Player is null");
         if (_playerAudioSource == null) Debug.Log("AudioSource on Player is null");
 
+        Mathf.Clamp(_health, 0, 3f);
     }
 
 
@@ -122,7 +126,7 @@ public class Player : MonoBehaviour
         if (_health <= 0)
         {
             _spawnManager.StopSpawn();
-
+            _gameManager.PlayerDead();
             Destroy(gameObject);
         }
     }
