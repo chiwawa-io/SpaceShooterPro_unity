@@ -15,8 +15,6 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _trippleShotPowerUp;
     [SerializeField]
-    private GameObject _speedPowerUp;
-    [SerializeField]
     private GameObject _shieldPowerUp;
     private bool _stopSpawn = false;
 
@@ -28,7 +26,6 @@ public class SpawnManager : MonoBehaviour
         if (_enemyContainer == null) Debug.Log("Enemy container on SpawnManager is NULL");
         if (_powerUpContainer == null) Debug.Log("_powerUpContainer on SpawnManager is NULL");
         if (_trippleShotPowerUp == null) Debug.Log("_trippleShotPowerUp on SpawnManager is NULL");
-        if (_speedPowerUp == null) Debug.Log("_speedPowerUp on SpawnManager is NULL");
         if (_shieldPowerUp == null) Debug.Log("_shieldPowerUp on SpawnManager is NULL");
     }
 
@@ -60,18 +57,6 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnSpeedPowerUpRoutine()
-    {
-        yield return new WaitForSeconds(Random.Range(10f, 15f));
-        while (_stopSpawn == false)
-        {
-            _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            GameObject newGameObject = Instantiate(_speedPowerUp, _spawnPos, Quaternion.identity);
-            newGameObject.transform.parent = _powerUpContainer.transform;
-            yield return new WaitForSeconds(Random.Range(14f, 15f));
-        }
-    }
-
     IEnumerator SpawnShieldPowerUpRoutine()
     {
         yield return new WaitForSeconds(Random.Range(5f, 13f));
@@ -98,7 +83,6 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnTripplePowerUpRoutine());
-        StartCoroutine(SpawnSpeedPowerUpRoutine());
         StartCoroutine(SpawnShieldPowerUpRoutine());
     }
 }

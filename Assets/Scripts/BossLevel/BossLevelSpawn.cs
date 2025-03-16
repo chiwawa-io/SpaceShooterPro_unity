@@ -9,18 +9,17 @@ public class BossLevelSpawn : MonoBehaviour
     [SerializeField]
     private GameObject _powerUpContainer;
     [SerializeField]
-    private GameObject _trippleShotPowerUp;
-    [SerializeField]
-    private GameObject _speedPowerUp;
-    [SerializeField]
-    private GameObject _shieldPowerUp;
+    private GameObject[] _powerUpArray;
     private bool _stopSpawn = false;
+    private int _selectPowerUp = 0;
 
     private Vector2 _spawnPos;
 
     void Start()
     {
         StartWave();
+
+        Mathf.Clamp(_selectPowerUp, 0, 2);
     }
 
     public void StopSpawn()
@@ -30,41 +29,20 @@ public class BossLevelSpawn : MonoBehaviour
 
 
     
-    IEnumerator SpawnTripplePowerUpRoutine()
+    IEnumerator SpawnPowerUpRoutine()
     {
         yield return new WaitForSeconds(Random.Range(7f, 10f));
         while (_stopSpawn == false)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            GameObject newGameObject = Instantiate(_trippleShotPowerUp, _spawnPos, Quaternion.identity);
+            _selectPowerUp = Random.Range(0, 3);
+            GameObject newGameObject = Instantiate(_powerUpArray[_selectPowerUp], _spawnPos, Quaternion.identity);
             newGameObject.transform.parent = _powerUpContainer.transform;
-            yield return new WaitForSeconds(Random.Range(7f, 20f));
+            yield return new WaitForSeconds(Random.Range(3f, 7f));
         }
     }
 
-    IEnumerator SpawnSpeedPowerUpRoutine()
-    {
-        yield return new WaitForSeconds(Random.Range(10f, 15f));
-        while (_stopSpawn == false)
-        {
-            _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            GameObject newGameObject = Instantiate(_speedPowerUp, _spawnPos, Quaternion.identity);
-            newGameObject.transform.parent = _powerUpContainer.transform;
-            yield return new WaitForSeconds(Random.Range(14f, 15f));
-        }
-    }
-
-    IEnumerator SpawnShieldPowerUpRoutine()
-    {
-        yield return new WaitForSeconds(Random.Range(5f, 13f));
-        while (_stopSpawn == false)
-        {
-            _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            GameObject newGameObject = Instantiate(_shieldPowerUp, _spawnPos, Quaternion.identity);
-            newGameObject.transform.parent = _powerUpContainer.transform;
-            yield return new WaitForSeconds(Random.Range(7f, 20f));
-        }
-    }
+    
     void Restart()
     {
         SceneManager.LoadScene(2); //current scene
@@ -79,8 +57,6 @@ public class BossLevelSpawn : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        StartCoroutine(SpawnTripplePowerUpRoutine());
-        StartCoroutine(SpawnSpeedPowerUpRoutine());
-        StartCoroutine(SpawnShieldPowerUpRoutine());
+        StartCoroutine(SpawnPowerUpRoutine());
     }
 }

@@ -14,6 +14,8 @@ public class UiManager : MonoBehaviour
     private Text _gameOverText;
     [SerializeField]
     private Text _restartText;
+    [SerializeField]
+    private Image _sprint;
     private int _scoreNum;
 
     void Start()
@@ -36,6 +38,14 @@ public class UiManager : MonoBehaviour
             _gameOverText.gameObject.SetActive(true);
             _restartText.gameObject.SetActive(true);
         }
+    }
+    public void SprintOn()
+    {
+        _sprint.gameObject.SetActive(true);
+    }
+    public void SprintOff() 
+    {
+        _sprint.gameObject.SetActive(false);
     }
 }
 

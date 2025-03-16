@@ -37,7 +37,11 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float _fireRate = 0.75f;
+    [SerializeField]
+    private float _sprintRate = 3f;
+    private float _canSprint = -1f;
     private float _canFire = -1f;
+    
     private float _userVerticalInput;
     private float _userHorizontalInput;
     
@@ -47,8 +51,8 @@ public class Player : MonoBehaviour
     private Vector2 _direction;
 
     private bool _isTripleShotOn = false;
-    private bool _isSpeedUpOn = false;
     private bool _isShieldOn = false;
+    private bool _sprint = false;
 
 
     void Start()
@@ -82,6 +86,8 @@ public class Player : MonoBehaviour
     {
         Movement();
         if (Input.GetKey(KeyCode.Space) && Time.time > _canFire) Fire();
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint) SprintOn();
+        if (Input.GetKeyUp(KeyCode.LeftShift)) SprintOff();
 
     }
 
@@ -92,7 +98,7 @@ public class Player : MonoBehaviour
 
         _direction = new Vector2(_userHorizontalInput, _userVerticalInput);
 
-        if (_isSpeedUpOn) transform.Translate(_direction * _speed * 2f * Time.deltaTime);
+        if (_sprint) transform.Translate(_direction * _speed * 2f * Time.deltaTime);
         else transform.Translate(_direction * _speed * Time.deltaTime);
 
         _boundaries = new Vector2(Mathf.Clamp(transform.position.x, -9f, 9f), Mathf.Clamp(transform.position.y, -3f, 5f));
@@ -130,7 +136,18 @@ public class Player : MonoBehaviour
         }
     }
     
-    
+    void SprintOn()
+    {
+        StartCoroutine(TurnOffSprint());
+        _canSprint = Time.time + _sprintRate;
+        _sprint = true;
+        _uiManager.SprintOn();
+    }
+    void SprintOff()
+    {
+        _sprint = false;
+        _uiManager.SprintOff();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -143,7 +160,6 @@ public class Player : MonoBehaviour
         }
         if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false); }
         if (other.transform.tag == "tripleShot") _TrippleShotActive();
-        if (other.transform.tag == "speedPower") _SpeedUpActive();
         if (other.transform.tag == "shield") _ShieldActive();
     }
 
@@ -161,19 +177,6 @@ public class Player : MonoBehaviour
         _isTripleShotOn = false;
     }
 
-    void _SpeedUpActive() 
-    {
-
-        _isSpeedUpOn = true;
-        StartCoroutine(SpeedUpEffect());
-    }
-
-    IEnumerator SpeedUpEffect()
-    {
-        yield return new WaitForSeconds(5);
-        _isSpeedUpOn = false;
-    }
-
     void _ShieldActive()
     {
 
@@ -181,5 +184,10 @@ public class Player : MonoBehaviour
         _shieldVisual.SetActive(true);
     }
 
-    
+    IEnumerator TurnOffSprint() 
+    {
+        yield return new WaitForSeconds (2f);
+        _uiManager.SprintOff();
+        _sprint = false;
+    }
 }

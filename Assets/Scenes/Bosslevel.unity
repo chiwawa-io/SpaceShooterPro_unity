@@ -380,6 +380,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335342875}
   m_CullTransparentMesh: 0
+--- !u!1 &535692546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 535692548}
+  - component: {fileID: 535692547}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &535692547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535692546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11961b0de03d7e1458ab481402e27fa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &535692548
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535692546}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.4195955, y: 0.9940657, z: -624.3719}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &615551608
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,12 +849,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerUpContainer: {fileID: 1211811169}
-  _trippleShotPowerUp: {fileID: 4746685944645399894, guid: 75a4330a3a26d1c479d7ae4cf7701f07,
-    type: 3}
-  _speedPowerUp: {fileID: 450921305044011835, guid: 5497d6bef86584f4d92544cb25ba040d,
-    type: 3}
-  _shieldPowerUp: {fileID: 6577867693685291108, guid: ebb897ab15e93614b9b2c6e8f9fcd696,
-    type: 3}
+  _powerUpArray:
+  - {fileID: 4746685944645399894, guid: 75a4330a3a26d1c479d7ae4cf7701f07, type: 3}
+  - {fileID: 450921305044011835, guid: 5497d6bef86584f4d92544cb25ba040d, type: 3}
+  - {fileID: 6577867693685291108, guid: ebb897ab15e93614b9b2c6e8f9fcd696, type: 3}
 --- !u!4 &1013217027
 Transform:
   m_ObjectHideFlags: 0
@@ -1861,7 +1902,6 @@ MonoBehaviour:
   _shieldsImg: {fileID: 1381788978}
   _gameOverText: {fileID: 335342878}
   _restartText: {fileID: 629915892}
-  _bossLevelSpawn: {fileID: 1013217026}
 --- !u!114 &2004349161
 MonoBehaviour:
   m_ObjectHideFlags: 0
