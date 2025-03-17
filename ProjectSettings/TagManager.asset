@@ -11,6 +11,7 @@ TagManager:
   - speedPower
   - shield
   - BossAtacks
+  - ammoSuplly
   layers:
   - Default
   - TransparentFX

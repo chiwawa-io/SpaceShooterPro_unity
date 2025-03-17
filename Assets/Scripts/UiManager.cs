@@ -14,16 +14,26 @@ public class UiManager : MonoBehaviour
     private Text _gameOverText;
     [SerializeField]
     private Text _restartText;
+    [SerializeField] 
+    private Text _ammoText;
     [SerializeField]
     private Image _sprint;
+    [SerializeField]
+    private int _ammoCount = 15;
     private int _scoreNum;
 
     void Start()
     {
         _scoreText.text = "Score: ";
+        _ammoText.text = "Ammo: " + _ammoCount;
+
         if (_liveSprites == null) Debug.Log("livesprites on Ui manager is null!");
         if (_gameOverText == null) Debug.Log("_gameOverText on Ui manager is null!");
         if (_restartText == null) Debug.Log("_restartText on UI manager is null!");
+        if (_sprint == null) Debug.Log("_sprint on UI manager is null!");
+        if (_scoreText == null) Debug.Log("_scoreText on UI manager is null!");
+        if (_ammoText == null) Debug.Log("_ammoText on UI manager is null!");
+
     }
 
     public void ScoreUpdate()
@@ -38,6 +48,11 @@ public class UiManager : MonoBehaviour
             _gameOverText.gameObject.SetActive(true);
             _restartText.gameObject.SetActive(true);
         }
+    }
+    public void AmmoUpdate(int ammoNumber) 
+    {
+        _ammoCount = ammoNumber;
+        _ammoText.text = "Ammo: " + _ammoCount;
     }
     public void SprintOn()
     {

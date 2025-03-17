@@ -87,8 +87,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         Movement();
-        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire) Fire();
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint && _ammoCount > 0) SprintOn();
+        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0) Fire();
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint) SprintOn();
         if (Input.GetKeyUp(KeyCode.LeftShift)) SprintOff();
 
     }
@@ -110,6 +110,7 @@ public class Player : MonoBehaviour
     void Fire() {
         _playerAudioSource.clip = _laserSound;
         _ammoCount--;
+        _uiManager.AmmoUpdate(_ammoCount);
         _laserPosition = new Vector2(transform.position.x, transform.position.y + _laserOffset);
         _trippleShotPos = new Vector2(transform.position.x + _tripleShotOffset, transform.position.y);
         _canFire = Time.time + _fireRate;
@@ -123,6 +124,8 @@ public class Player : MonoBehaviour
             
         }
         _playerAudioSource.Play();
+
+        if (_ammoCount == 0) _spawnManager.SpawnAmmoSuply();
     }
 
     
@@ -161,9 +164,10 @@ public class Player : MonoBehaviour
             IsDeath();
             _uiManager.LivesUpdate(_health); 
         }
-        if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false); }
+        if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false);}
         if (other.transform.tag == "tripleShot") _TrippleShotActive();
         if (other.transform.tag == "shield") _ShieldActive();
+        if (other.transform.tag == "ammoSuplly") { _ammoCount += 15; _uiManager.AmmoUpdate(_ammoCount);}
     }
 
     void _TrippleShotActive()

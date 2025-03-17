@@ -15,6 +15,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _trippleShotPowerUp;
     [SerializeField]
+    private GameObject _ammoPowerUp;
+    [SerializeField]
     private GameObject _shieldPowerUp;
     private bool _stopSpawn = false;
 
@@ -27,6 +29,7 @@ public class SpawnManager : MonoBehaviour
         if (_powerUpContainer == null) Debug.Log("_powerUpContainer on SpawnManager is NULL");
         if (_trippleShotPowerUp == null) Debug.Log("_trippleShotPowerUp on SpawnManager is NULL");
         if (_shieldPowerUp == null) Debug.Log("_shieldPowerUp on SpawnManager is NULL");
+        if (_ammoPowerUp == null) Debug.Log("_ammoPowerUp on SpawnManager is NULL");
     }
 
     public void StopSpawn()
@@ -84,5 +87,12 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnTripplePowerUpRoutine());
         StartCoroutine(SpawnShieldPowerUpRoutine());
+    }
+
+    public void SpawnAmmoSuply()
+    {
+        _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
+        GameObject newGameObject = Instantiate(_ammoPowerUp, _spawnPos, Quaternion.identity);
+        newGameObject.transform.parent = _powerUpContainer.transform;
     }
 }
