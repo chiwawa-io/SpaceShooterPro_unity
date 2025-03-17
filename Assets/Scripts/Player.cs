@@ -132,8 +132,8 @@ public class Player : MonoBehaviour
 
     void IsDeath()
     {
-        if (_health == 2) _fireRight.SetActive(true);
-        if (_health == 1) _fireLeft.SetActive(true);
+        if (_health < 3) _fireRight.SetActive(true);
+        if (_health < 2) _fireLeft.SetActive(true);
         if (_health <= 0)
         {
             _spawnManager.StopSpawn();
@@ -165,9 +165,11 @@ public class Player : MonoBehaviour
             _uiManager.LivesUpdate(_health); 
         }
         if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false);}
+        if (other.transform.tag == "ammoSuplly") { _ammoCount += 15; _uiManager.AmmoUpdate(_ammoCount);}
+        if (other.transform.tag == "healthPowerUp") { _health++; _uiManager.LivesUpdate(_health); _Regen();}
         if (other.transform.tag == "tripleShot") _TrippleShotActive();
         if (other.transform.tag == "shield") _ShieldActive();
-        if (other.transform.tag == "ammoSuplly") { _ammoCount += 15; _uiManager.AmmoUpdate(_ammoCount);}
+        
     }
 
     void _TrippleShotActive()
@@ -196,5 +198,11 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds (2f);
         _uiManager.SprintOff();
         _sprint = false;
+    }
+
+    void _Regen()
+    {
+        if (_health == 2) _fireLeft.SetActive(false);
+        if (_health == 3) _fireRight.SetActive(false);
     }
 }

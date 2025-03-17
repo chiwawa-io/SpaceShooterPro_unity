@@ -17,6 +17,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _ammoPowerUp;
     [SerializeField]
+    private GameObject _healthPowerUp;
+    [SerializeField]
     private GameObject _shieldPowerUp;
     private bool _stopSpawn = false;
 
@@ -71,6 +73,17 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(7f, 20f));
         }
     }
+    IEnumerator SpawnHealthPowerUpRoutine()
+    {
+        yield return new WaitForSeconds(20f);
+        while (_stopSpawn == false)
+        {
+            _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
+            GameObject newGameObject = Instantiate(_healthPowerUp, _spawnPos, Quaternion.identity);
+            newGameObject.transform.parent = _powerUpContainer.transform;
+            yield return new WaitForSeconds(Random.Range(30f, 45f));
+        }
+    }
     void Restart () 
     { 
         SceneManager.LoadScene(1); //current scene
@@ -87,6 +100,7 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnTripplePowerUpRoutine());
         StartCoroutine(SpawnShieldPowerUpRoutine());
+        StartCoroutine (SpawnHealthPowerUpRoutine());
     }
 
     public void SpawnAmmoSuply()

@@ -1899,6 +1899,8 @@ MonoBehaviour:
     type: 3}
   _ammoPowerUp: {fileID: 3906228394262573911, guid: 13b1117d139603444be825f50f8c9b00,
     type: 3}
+  _healthPowerUp: {fileID: 18868584773097892, guid: 86e260d1cb8b8dc41879b6e3869adfbe,
+    type: 3}
   _shieldPowerUp: {fileID: 6577867693685291108, guid: ebb897ab15e93614b9b2c6e8f9fcd696,
     type: 3}
 --- !u!4 &1790820014

@@ -12,6 +12,7 @@ TagManager:
   - shield
   - BossAtacks
   - ammoSuplly
+  - healthPowerUp
   layers:
   - Default
   - TransparentFX
