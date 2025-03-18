@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
     [SerializeField] 
     private GameObject _fireLeft;
     [SerializeField]
+    private GameObject _regenEffect;
+    [SerializeField]
     private AudioClip _laserSound;
     private AudioSource _playerAudioSource;
     private UiManager _uiManager;
@@ -72,6 +74,7 @@ public class Player : MonoBehaviour
         if (_laser == null) Debug.Log("_laser on Player is null");
         if (_trippleShot == null) Debug.Log("_trippleShot on Player is null");
         if (_shieldVisual == null) Debug.Log("_shieldVisual on Player is null");
+        if (_regenEffect == null) Debug.Log("_regenEffect on Player is null");
         if (_fireRight == null) Debug.Log("_fireRight on Player is null");
         if (_fireLeft == null) Debug.Log("_fireLeft on Player is null");
         if (_shieldVisual == null) Debug.Log("_shieldVisual on Player is null");
@@ -80,7 +83,6 @@ public class Player : MonoBehaviour
         if (_uiManager == null) Debug.Log("UI manager on Player is null");
         if (_playerAudioSource == null) Debug.Log("AudioSource on Player is null");
 
-        Mathf.Clamp(_health, 0, 3f);
     }
 
 
@@ -166,7 +168,7 @@ public class Player : MonoBehaviour
         }
         if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false);}
         if (other.transform.tag == "ammoSuplly") { _ammoCount += 15; _uiManager.AmmoUpdate(_ammoCount);}
-        if (other.transform.tag == "healthPowerUp") { _health++; _uiManager.LivesUpdate(_health); _Regen();}
+        if (other.transform.tag == "healthPowerUp") _Regen();
         if (other.transform.tag == "tripleShot") _TrippleShotActive();
         if (other.transform.tag == "shield") _ShieldActive();
         
@@ -202,7 +204,16 @@ public class Player : MonoBehaviour
 
     void _Regen()
     {
+        _regenEffect.SetActive(true);
+        StartCoroutine(RegenEffect());
+        if (_health < 3) _health++; _uiManager.LivesUpdate(_health);
         if (_health == 2) _fireLeft.SetActive(false);
         if (_health == 3) _fireRight.SetActive(false);
+    }
+
+    IEnumerator RegenEffect() 
+    {
+        yield return new WaitForSeconds(0.5f);
+        _regenEffect.SetActive(false);
     }
 }
