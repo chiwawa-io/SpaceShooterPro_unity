@@ -13,6 +13,7 @@ TagManager:
   - BossAtacks
   - ammoSuplly
   - healthPowerUp
+  - UltraLaser
   layers:
   - Default
   - TransparentFX

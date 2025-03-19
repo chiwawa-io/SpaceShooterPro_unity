@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
     [SerializeField] 
     private GameObject _shieldVisual;
     [SerializeField] 
+    private GameObject _ultraLaserVisual;
+    [SerializeField] 
     private GameObject _fireRight;
     [SerializeField] 
     private GameObject _fireLeft;
@@ -57,6 +59,7 @@ public class Player : MonoBehaviour
     private bool _isTripleShotOn = false;
     private bool _isShieldOn = false;
     private bool _sprint = false;
+    private bool _ultraLaserOn = false;
 
 
     void Start()
@@ -113,19 +116,24 @@ public class Player : MonoBehaviour
         _playerAudioSource.clip = _laserSound;
         _ammoCount--;
         _uiManager.AmmoUpdate(_ammoCount);
-        _laserPosition = new Vector2(transform.position.x, transform.position.y + _laserOffset);
-        _trippleShotPos = new Vector2(transform.position.x + _tripleShotOffset, transform.position.y);
         _canFire = Time.time + _fireRate;
-        if (_isTripleShotOn == true)
+
+        if (_ultraLaserOn) _ultraLaserVisual.SetActive(true);
+
+        else if (_isTripleShotOn)
         {
-            GameObject newGameObject = Instantiate(_trippleShot, _laserPosition, Quaternion.identity);
-    
+            _trippleShotPos = new Vector2(transform.position.x + _tripleShotOffset, transform.position.y);
+            _playerAudioSource.Play();
+            GameObject newGameObject = Instantiate(_trippleShot, _trippleShotPos, Quaternion.identity);
         }
-        else {
+        
+        else
+        {
+            _playerAudioSource.Play();
+            _laserPosition = new Vector2(transform.position.x, transform.position.y + _laserOffset);
             GameObject newGameObject = Instantiate(_laser, _laserPosition, Quaternion.identity);
-            
         }
-        _playerAudioSource.Play();
+        
 
         if (_ammoCount == 0) _spawnManager.SpawnAmmoSuply();
     }
@@ -169,21 +177,15 @@ public class Player : MonoBehaviour
         if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false);}
         if (other.transform.tag == "ammoSuplly") { _ammoCount += 15; _uiManager.AmmoUpdate(_ammoCount);}
         if (other.transform.tag == "healthPowerUp") _Regen();
-        if (other.transform.tag == "tripleShot") _TrippleShotActive();
         if (other.transform.tag == "shield") _ShieldActive();
-        
+        if (other.transform.tag == "tripleShot") StartCoroutine(TrippleShotEffect());
+        if (other.transform.tag == "UltraLaser") StartCoroutine(_UltraLaserOn());
     }
 
-    void _TrippleShotActive()
-    {
-        
-        
-        _isTripleShotOn = true;
-        StartCoroutine(TrippleShotEffect());
-    }
-
+    
     IEnumerator TrippleShotEffect()
     {
+        _isTripleShotOn = true;
         yield return new WaitForSeconds(5);
         _isTripleShotOn = false;
     }
@@ -215,5 +217,12 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         _regenEffect.SetActive(false);
+    }
+
+    IEnumerator _UltraLaserOn () {
+        _ultraLaserOn = true;
+        yield return new WaitForSeconds(5f);
+        _ultraLaserOn = false;
+        _ultraLaserVisual.SetActive(false);
     }
 }

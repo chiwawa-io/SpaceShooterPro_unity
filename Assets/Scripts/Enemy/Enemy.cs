@@ -59,5 +59,6 @@ public class Enemy : MonoBehaviour
             Instantiate(_enemyDestroyPrefab, transform.position, Quaternion.identity);
             Destroy (gameObject);
         }
+
     }
 }
