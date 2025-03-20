@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     private AudioClip _laserSound;
     private AudioSource _playerAudioSource;
     private UiManager _uiManager;
+    private CameraScript _cameraScript;
 
     [SerializeField]
     private float _fireRate = 0.75f;
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
         _spawnManager = GameObject.Find("Spawn_manager").GetComponent<SpawnManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<Game_manager>();
+        _cameraScript = GameObject.Find("Main Camera").GetComponent<CameraScript>();
 
         if (_spawnManager == null) Debug.Log("Spawn manager on Player is null");
         if (_gameManager == null) Debug.Log("_game_Manager on Player is null");
@@ -173,6 +175,7 @@ public class Player : MonoBehaviour
             _health -= 1; 
             IsDeath();
             _uiManager.LivesUpdate(_health); 
+            _cameraScript.CameraShake();
         }
         if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false);}
         if (other.transform.tag == "ammoSuplly") { _ammoCount += 15; _uiManager.AmmoUpdate(_ammoCount);}
