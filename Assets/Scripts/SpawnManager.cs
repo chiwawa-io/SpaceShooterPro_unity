@@ -8,6 +8,8 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject _enemy;
+    [SerializeField] 
+    private float _enemySpawnInterval = 3f;
     [SerializeField]
     private GameObject _enemyContainer;
     [SerializeField]
@@ -50,7 +52,7 @@ public class SpawnManager : MonoBehaviour
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
             GameObject newGameObject = Instantiate(_enemy, _spawnPos, Quaternion.identity);
             newGameObject.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(_enemySpawnInterval);
         }
     }
     IEnumerator SpawnCommonPowerUpRoutine()

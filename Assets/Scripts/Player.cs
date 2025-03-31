@@ -88,6 +88,7 @@ public class Player : MonoBehaviour
         if (_uiManager == null) Debug.Log("UI manager on Player is null");
         if (_playerAudioSource == null) Debug.Log("AudioSource on Player is null");
 
+        StartCoroutine(AmmoSupplyRoutine());
     }
 
 
@@ -137,7 +138,7 @@ public class Player : MonoBehaviour
         }
         
 
-        if (_ammoCount == 0) _spawnManager.SpawnAmmoSuply();
+        
     }
 
     
@@ -227,5 +228,14 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5f);
         _ultraLaserOn = false;
         _ultraLaserVisual.SetActive(false);
+    }
+
+    IEnumerator AmmoSupplyRoutine ()
+    {
+        while (true) {
+            yield return new WaitForSeconds(1f);
+            if (_ammoCount == 0) _spawnManager.SpawnAmmoSuply();
+            yield return new WaitForSeconds(2f);
+        }
     }
 }
