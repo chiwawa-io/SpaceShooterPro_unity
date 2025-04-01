@@ -49,22 +49,20 @@ public class Enemy : MonoBehaviour
 
         if (transform.position.y <= -4f)
         {
-            Respawn();
+            Destroy(gameObject);
         }
     }
 
     void ZigZagMovement() {
         _sinX = Mathf.Sin(Time.time * _sinFrequency) * _sinAmplitude;
         transform.position = new Vector2(_sinX, transform.position.y - _speed * Time.deltaTime);
+        if (transform.position.y <= -4f)
+        {
+            Destroy(gameObject);
+        }
     }
 
-    void Respawn ()
-    {
-        _Xposition = Random.Range(-8f, 8f);
-        _Yposition = 6f;
-        _position = new Vector2(_Xposition, _Yposition);
-        transform.position = _position;
-    }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {

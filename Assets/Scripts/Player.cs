@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     [SerializeField] 
     private GameObject _fireLeft;
     [SerializeField]
+    private GameObject _electroShockEffect;
+    [SerializeField]
     private GameObject _regenEffect;
     [SerializeField]
     private AudioClip _laserSound;
@@ -61,6 +63,7 @@ public class Player : MonoBehaviour
     private bool _isShieldOn = false;
     private bool _sprint = false;
     private bool _ultraLaserOn = false;
+    private bool _canMove = true;
 
 
     void Start()
@@ -108,8 +111,8 @@ public class Player : MonoBehaviour
 
         _direction = new Vector2(_userHorizontalInput, _userVerticalInput);
 
-        if (_sprint) transform.Translate(_direction * _speed * 2f * Time.deltaTime);
-        else transform.Translate(_direction * _speed * Time.deltaTime);
+        if (_sprint && _canMove) transform.Translate(_direction * _speed * 2f * Time.deltaTime);
+        else if (_canMove) transform.Translate(_direction * _speed * Time.deltaTime);
 
         _boundaries = new Vector2(Mathf.Clamp(transform.position.x, -9f, 9f), Mathf.Clamp(transform.position.y, -3f, 5f));
         transform.position = _boundaries;
@@ -179,11 +182,12 @@ public class Player : MonoBehaviour
             _cameraScript.CameraShake();
         }
         if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false);}
-        if (other.transform.tag == "ammoSuplly") { _ammoCount += 15; _uiManager.AmmoUpdate(_ammoCount);}
+        if (other.transform.tag == "ammoSuplly") { _ammoCount += 30; _uiManager.AmmoUpdate(_ammoCount);}
         if (other.transform.tag == "healthPowerUp") _Regen();
         if (other.transform.tag == "shield") _ShieldActive();
         if (other.transform.tag == "tripleShot") StartCoroutine(TrippleShotEffect());
         if (other.transform.tag == "UltraLaser") StartCoroutine(_UltraLaserOn());
+        if (other.transform.tag == "ElectroShock") StartCoroutine(_ElectroShock());
     }
 
     
@@ -237,5 +241,14 @@ public class Player : MonoBehaviour
             if (_ammoCount == 0) _spawnManager.SpawnAmmoSuply();
             yield return new WaitForSeconds(2f);
         }
+    }
+
+    IEnumerator _ElectroShock() 
+    {
+        _canMove = false;
+        _electroShockEffect.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        _electroShockEffect.SetActive(false);
+        _canMove = true;
     }
 }

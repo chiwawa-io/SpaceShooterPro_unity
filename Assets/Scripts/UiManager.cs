@@ -41,6 +41,13 @@ public class UiManager : MonoBehaviour
         _scoreNum += 10;
         _scoreText.text = "Score: " + _scoreNum;
     }
+
+    public void BigScoreUpdate()
+    {
+        _scoreNum += 30;
+        _scoreText.text = "Score: " + _scoreNum;
+    }
+
     public void LivesUpdate(int currentLives) {
         _livesImg.sprite = _liveSprites[currentLives];
         if (currentLives == 0)

@@ -26,6 +26,8 @@ public class SpawnManager : MonoBehaviour
     private Vector2 _spawnPos;
 
     private int _selectPowerUp;
+    private int _enemyCount = 1;
+
 
     private void Start()
     {
@@ -49,10 +51,16 @@ public class SpawnManager : MonoBehaviour
         
         while (_stopSpawn == false)
         {
-            _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            GameObject newGameObject = Instantiate(_enemy, _spawnPos, Quaternion.identity);
-            newGameObject.transform.parent = _enemyContainer.transform;
+            _enemyCount++;
+            Debug.Log("Enemy count: " + _enemyCount);
+            for (int i = 0; i < _enemyCount; i++)
+            {
+                _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
+                GameObject newGameObject = Instantiate(_enemy, _spawnPos, Quaternion.identity);
+                newGameObject.transform.parent = _enemyContainer.transform;
+            }
             yield return new WaitForSeconds(_enemySpawnInterval);
+            
         }
     }
     IEnumerator SpawnCommonPowerUpRoutine()
@@ -75,7 +83,7 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawn == false)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            _selectPowerUp = Random.Range(0, 2);
+            _selectPowerUp = Random.Range(0, 3);
             GameObject newGameObject = Instantiate(_rarePowerUpArray[_selectPowerUp], _spawnPos, Quaternion.identity);
             newGameObject.transform.parent = _powerUpContainer.transform;
             yield return new WaitForSeconds(Random.Range(15f, 20f));
