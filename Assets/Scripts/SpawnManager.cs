@@ -8,6 +8,8 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject _enemy;
+    [SerializeField]
+    private GameObject _enemyWithLasers;
     [SerializeField] 
     private float _enemySpawnInterval = 3f;
     [SerializeField]
@@ -63,6 +65,18 @@ public class SpawnManager : MonoBehaviour
             
         }
     }
+
+    IEnumerator SpawnEnemyWithLasersRoutine()
+    {
+        while (_stopSpawn == false)
+        {
+            _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
+            Instantiate(_enemyWithLasers, _spawnPos, Quaternion.identity);
+
+            yield return new WaitForSeconds(10f);
+        }
+    }
+
     IEnumerator SpawnCommonPowerUpRoutine()
     {
         yield return new WaitForSeconds(Random.Range(7f, 10f));
@@ -101,6 +115,7 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnCommonPowerUpRoutine());
         StartCoroutine (SpawnRarePowerUpRoutine());
+        StartCoroutine(SpawnEnemyWithLasersRoutine());
     }
 
     public void SpawnAmmoSuply()

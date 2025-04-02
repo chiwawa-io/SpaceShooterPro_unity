@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5142738e79b2574baf057901cfa917a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
+  _speed: 2
   _sinFrequency: 3
   _sinAmplitude: 2
   _laser: {fileID: 8854047573111746548, guid: 54d615fe2af26bd4fa4934a743555428, type: 3}

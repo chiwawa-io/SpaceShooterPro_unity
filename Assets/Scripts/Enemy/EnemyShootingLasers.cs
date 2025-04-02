@@ -8,6 +8,8 @@ public class EnemyShootingLasers : MonoBehaviour
     [SerializeField]
     private GameObject _blowUp;
     [SerializeField]
+    private GameObject _laser;
+    [SerializeField]
     private float _speed = 5f;
 
     void Start()
@@ -15,6 +17,8 @@ public class EnemyShootingLasers : MonoBehaviour
         _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
 
         if (_uiManager == null) Debug.Log("UI manager on Enemy is null");
+
+        StartCoroutine(ShootLaser());
     }
 
 
@@ -30,6 +34,15 @@ public class EnemyShootingLasers : MonoBehaviour
         if (transform.position.y <= -4f)
         {
             Destroy(gameObject);
+        }
+    }
+
+    IEnumerator ShootLaser ()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1.5f);
+            Instantiate(_laser, transform.position , Quaternion.identity); //new Vector2(transform.position.y - 1.95f, transform.position.x + 0.5f) idk why this cause bug
         }
     }
 
