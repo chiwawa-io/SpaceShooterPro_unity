@@ -11,6 +11,8 @@ public class EnemyShootingLasers : MonoBehaviour
     private GameObject _laser;
     [SerializeField]
     private float _speed = 5f;
+    [SerializeField]
+    private int _health = 2;
 
     void Start()
     {
@@ -46,20 +48,27 @@ public class EnemyShootingLasers : MonoBehaviour
         }
     }
 
+    void _IsDeath() {
+        if (_health <= 0)
+        {
+            _uiManager.BigScoreUpdate();
+            Instantiate(_blowUp, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.transform.tag == "laser")
         {
-            _uiManager.BigScoreUpdate();
-            Instantiate(_blowUp, transform.position, Quaternion.identity);
+            _health--;
+            _IsDeath();
             Destroy(other.gameObject);
-            Destroy(gameObject);
         }
         else if (other.transform.tag == "Player")
         {
-            _uiManager.BigScoreUpdate();
-            Instantiate(_blowUp, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            _health--;
+            _IsDeath();
         }
 
     }

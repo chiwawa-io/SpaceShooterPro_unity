@@ -5,11 +5,6 @@ using UnityEngine;
 public class EnemyLaserScript : MonoBehaviour
 {
 
-    void Start()
-    {
-        
-    }
-
 
     void Update()
     {

@@ -7,15 +7,13 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 5f;
-    private float _Xposition;
-    private float _Yposition;
-    private Vector2 _position;
-
     [SerializeField]
     private float _sinFrequency = 3f;
     [SerializeField]
     private float _sinAmplitude = 3f;
     private float _sinX;
+    private Vector2 _direction;
+    private Vector2 _deltaPosition;
 
 
     [SerializeField]
@@ -24,25 +22,47 @@ public class Enemy : MonoBehaviour
     private GameObject _enemyDestroyPrefab;
     [SerializeField]
     private UiManager _uiManager;
+    [SerializeField]
+    private GameObject _player;
+    private Rigidbody2D _rb2d;
 
+    [SerializeField]
     private int _randomMovement = 0;
+    private bool _offensiveMode = false;
 
     void Start()
     {
         _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
+        _player = GameObject.FindGameObjectWithTag("Player");
+        _rb2d = GetComponent<Rigidbody2D>();
 
         if (_uiManager == null) Debug.Log("UI manager on Enemy is null");
+        if (_player == null) Debug.Log("Player on Enemy is null");
+        if (_rb2d == null) Debug.Log("Rigidbody on Enemy is null");
 
-        _randomMovement = Random.Range(0, 4);
+        _randomMovement = Random.Range(1, 5);
 
         if (_randomMovement == 2) transform.Rotate(0, 0, 20f);
         if (_randomMovement == 1) transform.Rotate(0, 0, -20f);
+        if (_randomMovement == 4) _offensiveMode = true;
     }
     void Update()
     {
        if (_randomMovement <= 2) BasicMovement();
-       if (_randomMovement > 2) ZigZagMovement();
+       if (_randomMovement == 3) ZigZagMovement();
     }
+
+    private void FixedUpdate()
+    {
+        if (_offensiveMode)
+        {
+            _speed = 3f;
+            if (_player != null) _direction = (_player.transform.position - transform.position).normalized;
+            _deltaPosition = _speed * _direction * Time.fixedDeltaTime;
+            _rb2d.MovePosition(_rb2d.position + _deltaPosition);
+        }
+    }
+
 
     void BasicMovement() {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
