@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private float _speed = 1f;
     [SerializeField]
     private int _health = 3;
+    private int _shields = 0;
     [SerializeField]
     private int _ammoCount = 15;
     [SerializeField]
@@ -92,19 +93,20 @@ public class Player : MonoBehaviour
         if (_playerAudioSource == null) Debug.Log("AudioSource on Player is null");
 
         StartCoroutine(AmmoSupplyRoutine());
+        Mathf.Clamp(_shields, 0, 3f); // making shields limited to three
     }
 
 
     void Update()
     {
-        Movement();
-        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0) Fire();
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint) SprintOn();
-        if (Input.GetKeyUp(KeyCode.LeftShift)) SprintOff();
+        _Movement();
+        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0) _Fire();
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint) _SprintOn();
+        if (Input.GetKeyUp(KeyCode.LeftShift)) _SprintOff();
 
     }
 
-    void Movement()
+    void _Movement()
     {
         _userHorizontalInput = Input.GetAxis("Horizontal");
         _userVerticalInput = Input.GetAxis("Vertical");
@@ -118,7 +120,7 @@ public class Player : MonoBehaviour
         transform.position = _boundaries;
     }
 
-    void Fire() {
+    void _Fire() {
         _playerAudioSource.clip = _laserSound;
         _ammoCount--;
         _uiManager.AmmoUpdate(_ammoCount);
@@ -146,7 +148,7 @@ public class Player : MonoBehaviour
 
     
 
-    void IsDeath()
+    void _IsDeath()
     {
         if (_health < 3) _fireRight.SetActive(true);
         if (_health < 2) _fireLeft.SetActive(true);
@@ -158,14 +160,14 @@ public class Player : MonoBehaviour
         }
     }
     
-    void SprintOn()
+    void _SprintOn()
     {
         StartCoroutine(TurnOffSprint());
         _canSprint = Time.time + _sprintRate;
         _sprint = true;
         _uiManager.SprintOn();
     }
-    void SprintOff()
+    void _SprintOff()
     {
         _sprint = false;
         _uiManager.SprintOff();
@@ -175,13 +177,11 @@ public class Player : MonoBehaviour
     {
 
         if (other.transform.tag == "obstacle"  && _isShieldOn == false) 
-        { 
-            _health -= 1; 
-            IsDeath();
-            _uiManager.LivesUpdate(_health); 
-            _cameraScript.CameraShake();
+        {
+            _DamageTaken();
+            _IsDeath();
         }
-        if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false);}
+        if (other.transform.tag == "obstacle" && _isShieldOn) { _shields--; _ShieldCheck(); }
         if (other.transform.tag == "ammoSuplly") { _ammoCount += 30; _uiManager.AmmoUpdate(_ammoCount);}
         if (other.transform.tag == "healthPowerUp") _Regen();
         if (other.transform.tag == "shield") _ShieldActive();
@@ -191,25 +191,28 @@ public class Player : MonoBehaviour
     }
 
     
-    IEnumerator TrippleShotEffect()
-    {
-        _isTripleShotOn = true;
-        yield return new WaitForSeconds(5);
-        _isTripleShotOn = false;
-    }
+    
 
     void _ShieldActive()
     {
-
-        _isShieldOn = true;
-        _shieldVisual.SetActive(true);
+        _shields++;
+        _ShieldCheck();
     }
 
-    IEnumerator TurnOffSprint() 
+    void _ShieldCheck()
     {
-        yield return new WaitForSeconds (2f);
-        _uiManager.SprintOff();
-        _sprint = false;
+        if (_shields > 0)
+        {
+            _isShieldOn = true;
+            _shieldVisual.SetActive(true);
+            _uiManager.ShieldsUpdate(_shields);
+        }
+        else
+        {
+            _isShieldOn = false;
+            _shieldVisual.SetActive(false);
+            _uiManager.ShieldsUpdate(_shields);
+        }
     }
 
     void _Regen()
@@ -221,6 +224,23 @@ public class Player : MonoBehaviour
         if (_health == 3) _fireRight.SetActive(false);
     }
 
+    void _DamageTaken() {
+        _health -= 1;
+        _uiManager.LivesUpdate(_health);
+        _cameraScript.CameraShake();
+    }
+    IEnumerator TrippleShotEffect()
+    {
+        _isTripleShotOn = true;
+        yield return new WaitForSeconds(5);
+        _isTripleShotOn = false;
+    }
+    IEnumerator TurnOffSprint()
+    {
+        yield return new WaitForSeconds(2f);
+        _uiManager.SprintOff();
+        _sprint = false;
+    }
     IEnumerator RegenEffect() 
     {
         yield return new WaitForSeconds(0.5f);

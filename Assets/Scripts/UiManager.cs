@@ -11,6 +11,10 @@ public class UiManager : MonoBehaviour
     [SerializeField]
     private Image _livesImg;
     [SerializeField]
+    private Sprite[] _shieldSprites;
+    [SerializeField]
+    private Image _shieldsImg;
+    [SerializeField]
     private Text _gameOverText;
     [SerializeField]
     private Text _restartText;
@@ -68,6 +72,10 @@ public class UiManager : MonoBehaviour
     public void SprintOff() 
     {
         _sprint.gameObject.SetActive(false);
+    }
+    public void ShieldsUpdate(int currentShields)
+    {
+        _shieldsImg.sprite = _shieldSprites[currentShields];
     }
 }
 

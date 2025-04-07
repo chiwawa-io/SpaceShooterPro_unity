@@ -28,7 +28,7 @@ public class SpawnManager : MonoBehaviour
     private Vector2 _spawnPos;
 
     private int _selectPowerUp;
-    private int _enemyCount = 1;
+    private float _enemyCount = 1;
 
 
     private void Start()
@@ -53,9 +53,10 @@ public class SpawnManager : MonoBehaviour
         
         while (_stopSpawn == false)
         {
-            _enemyCount++;
+            _enemyCount += 0.5f;
+
             Debug.Log("Enemy count: " + _enemyCount);
-            for (int i = 0; i < _enemyCount; i++)
+            for (float i = 0; i < _enemyCount; i++)
             {
                 _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
                 GameObject newGameObject = Instantiate(_enemy, _spawnPos, Quaternion.identity);
