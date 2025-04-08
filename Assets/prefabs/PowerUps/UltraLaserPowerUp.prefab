@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8111638791456044133}
   m_Layer: 0
   m_Name: UltraLaserPowerUp
-  m_TagString: UltraLaser
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -56,11 +56,7 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawn == false)
         {
             _enemyCount += 0.5f;
-            if (_enemyCount > 5 && _enemyCount < 7) _enemySpawnInterval += 0.5f;
-            else if (_enemyCount > 7 && _enemyCount < 10) _enemySpawnInterval++;
-            else if (_enemyCount > 10 && _enemyCount < 15) _enemySpawnInterval += 2;
-            else if (_enemyCount > 15 && _enemyCount < 20) _enemySpawnInterval += 3;
-            else if (_enemyCount > 20) _enemySpawnInterval += 4;
+            _enemySpawnInterval += 0.3f;
             Debug.Log("Enemy count: " + _enemyCount);
             for (float i = 0; i < _enemyCount; i++)
             {
@@ -78,7 +74,7 @@ public class SpawnManager : MonoBehaviour
         while (!_stopSpawn)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), Random.Range(7f, 11f));
-            //Instantiate(_enemyWithLasers, _spawnPos, Quaternion.identity);
+            Instantiate(_enemyWithLasers, _spawnPos, Quaternion.identity);
 
             yield return new WaitForSeconds(10f);
         }

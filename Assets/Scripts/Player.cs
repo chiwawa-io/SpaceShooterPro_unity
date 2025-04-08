@@ -44,6 +44,8 @@ public class Player : MonoBehaviour
     private AudioSource _playerAudioSource;
     private UiManager _uiManager;
     private CameraScript _cameraScript;
+    private Animator _animator;
+    private PowerUp _powerUp;
 
     [SerializeField]
     private float _fireRate = 0.75f;
@@ -75,9 +77,11 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_manager").GetComponent<SpawnManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<Game_manager>();
         _cameraScript = GameObject.Find("Main Camera").GetComponent<CameraScript>();
+        _animator = GetComponent<Animator>();
 
         if (_spawnManager == null) Debug.Log("Spawn manager on Player is null");
         if (_gameManager == null) Debug.Log("_game_Manager on Player is null");
+        if (_animator == null) Debug.Log("animator on Player is null");
         
         if (_laserContainer == null) Debug.Log("_laserContainer on Player is null");
         if (_laser == null) Debug.Log("_laser on Player is null");
@@ -93,7 +97,7 @@ public class Player : MonoBehaviour
         if (_playerAudioSource == null) Debug.Log("AudioSource on Player is null");
 
         StartCoroutine(AmmoSupplyRoutine());
-        Mathf.Clamp(_shields, 0, 3f); // making shields limited to three
+        Mathf.Clamp(_shields, 0, 3); // making shields limited to three
     }
 
 
@@ -103,13 +107,19 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0) _Fire();
         if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint) _SprintOn();
         if (Input.GetKeyUp(KeyCode.LeftShift)) _SprintOff();
-
+        if(Input.GetKeyDown(KeyCode.C)) _FindAndGetPowered();
     }
 
     void _Movement()
     {
         _userHorizontalInput = Input.GetAxis("Horizontal");
         _userVerticalInput = Input.GetAxis("Vertical");
+
+        if (Input.GetKeyDown(KeyCode.D)) _animator.SetTrigger("TurningRight");
+        if (Input.GetKeyUp(KeyCode.D)) _animator.SetTrigger("FromRightToDefault");
+        if (Input.GetKeyDown(KeyCode.A)) _animator.SetTrigger("TurningLeft");
+        if (Input.GetKeyUp(KeyCode.A)) _animator.SetTrigger("FromLeftToDefault");
+
 
         _direction = new Vector2(_userHorizontalInput, _userVerticalInput);
 
@@ -141,9 +151,6 @@ public class Player : MonoBehaviour
             _laserPosition = new Vector2(transform.position.x, transform.position.y + _laserOffset);
             GameObject newGameObject = Instantiate(_laser, _laserPosition, Quaternion.identity);
         }
-        
-
-        
     }
 
     
@@ -173,6 +180,12 @@ public class Player : MonoBehaviour
         _uiManager.SprintOff();
     }
 
+    void _FindAndGetPowered() 
+    {
+        _powerUp = GameObject.FindGameObjectWithTag("PowerUp").GetComponent<PowerUp>();
+        if (_powerUp != null) _powerUp.PowerUpMagnet();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
 
@@ -182,12 +195,12 @@ public class Player : MonoBehaviour
             _IsDeath();
         }
         if (other.transform.tag == "obstacle" && _isShieldOn) { _shields--; _ShieldCheck(); }
-        if (other.transform.tag == "ammoSuplly") { _ammoCount += 30; _uiManager.AmmoUpdate(_ammoCount);}
-        if (other.transform.tag == "healthPowerUp") _Regen();
-        if (other.transform.tag == "shield") _ShieldActive();
-        if (other.transform.tag == "tripleShot") StartCoroutine(TrippleShotEffect());
-        if (other.transform.tag == "UltraLaser") StartCoroutine(_UltraLaserOn());
-        if (other.transform.tag == "ElectroShock") StartCoroutine(_ElectroShock());
+        if (other.transform.name == "AmmoSupplyPowerUp(Clone)") { _ammoCount += 30; _uiManager.AmmoUpdate(_ammoCount);}
+        if (other.transform.name == "HealthPowerUp(Clone)") _Regen();
+        if (other.transform.name == "ShieldPowerUp(Clone)") _ShieldActive();
+        if (other.transform.name == "TrippleShotPowerUp(Clone)") StartCoroutine(TrippleShotEffect());
+        if (other.transform.name == "UltraLaserPowerUp(Clone)") StartCoroutine(_UltraLaserOn());
+        if (other.transform.name == "ElectroShock(Clone)") StartCoroutine(_ElectroShock());
     }
 
     

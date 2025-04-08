@@ -6,12 +6,15 @@ public class EnemyShootingLasers : MonoBehaviour
 {
     private UiManager _uiManager;
     private GameObject _player;
-    private Vector3 _directionToPlayer;
-    private float _dotProductPlayerForward;
+    private GameObject _powerUp;
     [SerializeField]
     private GameObject _blowUp;
     [SerializeField]
     private GameObject _laser;
+    [SerializeField]
+    private GameObject _powerUpAttack;
+
+    private float _dotProductPlayerForward;
     [SerializeField]
     private float _speed = 5f;
     [SerializeField]
@@ -19,6 +22,10 @@ public class EnemyShootingLasers : MonoBehaviour
     [SerializeField]
     private int _ID = 0;
 
+    private Vector3 _directionToPlayer;
+
+    private bool _isPowerUpNear = false;
+    
     void Start()
     {
         _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
@@ -29,6 +36,8 @@ public class EnemyShootingLasers : MonoBehaviour
 
         if (_ID == 1) StartCoroutine(ShootLaserForward());
         if (_ID == 2) StartCoroutine(_BehindPlayerCheck());
+
+        StartCoroutine(_PowerUpNearCheck());
     }
 
 
@@ -53,7 +62,7 @@ public class EnemyShootingLasers : MonoBehaviour
     {
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
 
-        if (transform.position.y <= -10f)
+        if (transform.position.y <= -15f)
         {
             Destroy(gameObject);
         }
@@ -75,9 +84,9 @@ public class EnemyShootingLasers : MonoBehaviour
             yield return new WaitForSeconds(1f);
             if (_player != null) _directionToPlayer = (_player.transform.position - transform.position).normalized;
             if (_player != null) _dotProductPlayerForward = Vector3.Dot(_directionToPlayer, _player.transform.right);
-//            Debug.Log(_dotProductPlayerForward);
+            Debug.Log(_dotProductPlayerForward);
 
-            if (_dotProductPlayerForward <= 0.5f) Instantiate(_laser, transform.position, Quaternion.identity); //Debug.Log("Enemy when shoot: " + "X: " + transform.position.x + "Y: " + transform.position.y); 
+            if (_dotProductPlayerForward <= 0.1f) Instantiate(_laser, transform.position, Quaternion.identity); //Debug.Log("Enemy when shoot: " + "X: " + transform.position.x + "Y: " + transform.position.y); 
             }
     }
 
@@ -87,6 +96,19 @@ public class EnemyShootingLasers : MonoBehaviour
         {
             yield return new WaitForSeconds(3f);
             Instantiate(_laser, transform.position , Quaternion.identity); //new Vector2(transform.position.y - 1.95f, transform.position.x + 0.5f) idk why this cause bug
+        }
+    }
+
+    IEnumerator _PowerUpNearCheck()
+    {
+        while (true) 
+        {
+            yield return new WaitForSeconds(2f);
+            _powerUp = GameObject.FindGameObjectWithTag("PowerUp");
+            if (_powerUp != null) { _isPowerUpNear = (_powerUp.transform.position.x - transform.position.x < 5f) && (_powerUp.transform.position.y - transform.position.y < 5f); Debug.Log("PowerUp found"); }
+            if (_isPowerUpNear)  _powerUpAttack.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            _powerUpAttack.SetActive(false);
         }
     }
 
