@@ -6,7 +6,7 @@ public class EnemyShootingLasers : MonoBehaviour
 {
     private UiManager _uiManager;
     private GameObject _player;
-    private Vector2 _directionToPlayer;
+    private Vector3 _directionToPlayer;
     private float _dotProductPlayerForward;
     [SerializeField]
     private GameObject _blowUp;
@@ -73,10 +73,11 @@ public class EnemyShootingLasers : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1f);
-            if (_player != null) _directionToPlayer = _player.transform.position - transform.position;
-            _dotProductPlayerForward = Vector2.Dot(_directionToPlayer.normalized, _player.transform.forward);
+            if (_player != null) _directionToPlayer = (_player.transform.position - transform.position).normalized;
+            if (_player != null) _dotProductPlayerForward = Vector3.Dot(_directionToPlayer, _player.transform.right);
+//            Debug.Log(_dotProductPlayerForward);
 
-            if (_dotProductPlayerForward < 0.5f) { Instantiate(_laser, transform.position, Quaternion.identity); Debug.Log("Enemy when shoot: " + "X: " + transform.position.x + "Y: " + transform.position.y); }
+            if (_dotProductPlayerForward <= 0.5f) Instantiate(_laser, transform.position, Quaternion.identity); //Debug.Log("Enemy when shoot: " + "X: " + transform.position.x + "Y: " + transform.position.y); 
             }
     }
 
