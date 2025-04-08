@@ -10,6 +10,8 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemy;
     [SerializeField]
     private GameObject _enemyWithLasers;
+    [SerializeField]
+    private GameObject _smartEnemy;
     [SerializeField] 
     private float _enemySpawnInterval = 3f;
     [SerializeField]
@@ -54,11 +56,15 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawn == false)
         {
             _enemyCount += 0.5f;
-
+            if (_enemyCount > 5 && _enemyCount < 7) _enemySpawnInterval += 0.5f;
+            else if (_enemyCount > 7 && _enemyCount < 10) _enemySpawnInterval++;
+            else if (_enemyCount > 10 && _enemyCount < 15) _enemySpawnInterval += 2;
+            else if (_enemyCount > 15 && _enemyCount < 20) _enemySpawnInterval += 3;
+            else if (_enemyCount > 20) _enemySpawnInterval += 4;
             Debug.Log("Enemy count: " + _enemyCount);
             for (float i = 0; i < _enemyCount; i++)
             {
-                _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
+                _spawnPos = new Vector2(Random.Range(-8f, 8f), Random.Range(7f, 11f));
                 GameObject newGameObject = Instantiate(_enemy, _spawnPos, Quaternion.identity);
                 newGameObject.transform.parent = _enemyContainer.transform;
             }
@@ -69,19 +75,29 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemyWithLasersRoutine()
     {
-        while (_stopSpawn == false)
+        while (!_stopSpawn)
         {
-            _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            Instantiate(_enemyWithLasers, _spawnPos, Quaternion.identity);
+            _spawnPos = new Vector2(Random.Range(-8f, 8f), Random.Range(7f, 11f));
+            //Instantiate(_enemyWithLasers, _spawnPos, Quaternion.identity);
 
             yield return new WaitForSeconds(10f);
+        }
+    }
+
+    IEnumerator SpawnSmartEnemies()
+    {
+        while (!_stopSpawn) 
+        {
+            _spawnPos = new Vector2(Random.Range(-8f, 8f), Random.Range(7f, 11f));
+            Instantiate(_smartEnemy, _spawnPos, Quaternion.Euler(0, 0, 180f));
+            yield return new WaitForSeconds(15f);
         }
     }
 
     IEnumerator SpawnCommonPowerUpRoutine()
     {
         yield return new WaitForSeconds(Random.Range(7f, 10f));
-        while (_stopSpawn == false)
+        while (!_stopSpawn)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
             _selectPowerUp = Random.Range(0, 2);
@@ -95,7 +111,7 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnRarePowerUpRoutine()
     {
         yield return new WaitForSeconds(20f);
-        while (_stopSpawn == false)
+        while (!_stopSpawn)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
             _selectPowerUp = Random.Range(0, 3);
@@ -117,6 +133,7 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnCommonPowerUpRoutine());
         StartCoroutine (SpawnRarePowerUpRoutine());
         StartCoroutine(SpawnEnemyWithLasersRoutine());
+        StartCoroutine(SpawnSmartEnemies());
     }
 
     public void SpawnAmmoSuply()
