@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5979896233720872577}
   m_Layer: 0
   m_Name: AmmoSupplyPowerUp
-  m_TagString: ammoSuplly
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b0f0864cc74d1428a328deaad65fbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 1
+  _speed: 3.5
   _powerUpSound: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!50 &1259356368531351704
 Rigidbody2D:

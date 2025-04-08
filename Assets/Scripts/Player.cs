@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private float _speed = 1f;
     [SerializeField]
     private int _health = 3;
+    private int _shields = 0;
     [SerializeField]
     private int _ammoCount = 15;
     [SerializeField]
@@ -29,15 +30,22 @@ public class Player : MonoBehaviour
     [SerializeField] 
     private GameObject _shieldVisual;
     [SerializeField] 
+    private GameObject _ultraLaserVisual;
+    [SerializeField] 
     private GameObject _fireRight;
     [SerializeField] 
     private GameObject _fireLeft;
+    [SerializeField]
+    private GameObject _electroShockEffect;
     [SerializeField]
     private GameObject _regenEffect;
     [SerializeField]
     private AudioClip _laserSound;
     private AudioSource _playerAudioSource;
     private UiManager _uiManager;
+    private CameraScript _cameraScript;
+    private Animator _animator;
+    private PowerUp _powerUp;
 
     [SerializeField]
     private float _fireRate = 0.75f;
@@ -57,6 +65,8 @@ public class Player : MonoBehaviour
     private bool _isTripleShotOn = false;
     private bool _isShieldOn = false;
     private bool _sprint = false;
+    private bool _ultraLaserOn = false;
+    private bool _canMove = true;
 
 
     void Start()
@@ -66,9 +76,12 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
         _spawnManager = GameObject.Find("Spawn_manager").GetComponent<SpawnManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<Game_manager>();
+        _cameraScript = GameObject.Find("Main Camera").GetComponent<CameraScript>();
+        _animator = GetComponent<Animator>();
 
         if (_spawnManager == null) Debug.Log("Spawn manager on Player is null");
         if (_gameManager == null) Debug.Log("_game_Manager on Player is null");
+        if (_animator == null) Debug.Log("animator on Player is null");
         
         if (_laserContainer == null) Debug.Log("_laserContainer on Player is null");
         if (_laser == null) Debug.Log("_laser on Player is null");
@@ -83,56 +96,66 @@ public class Player : MonoBehaviour
         if (_uiManager == null) Debug.Log("UI manager on Player is null");
         if (_playerAudioSource == null) Debug.Log("AudioSource on Player is null");
 
+        StartCoroutine(AmmoSupplyRoutine());
+        Mathf.Clamp(_shields, 0, 3); // making shields limited to three
     }
 
 
     void Update()
     {
-        Movement();
-        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0) Fire();
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint) SprintOn();
-        if (Input.GetKeyUp(KeyCode.LeftShift)) SprintOff();
-
+        _Movement();
+        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0) _Fire();
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _canSprint) _SprintOn();
+        if (Input.GetKeyUp(KeyCode.LeftShift)) _SprintOff();
+        if(Input.GetKeyDown(KeyCode.C)) _FindAndGetPowered();
     }
 
-    void Movement()
+    void _Movement()
     {
         _userHorizontalInput = Input.GetAxis("Horizontal");
         _userVerticalInput = Input.GetAxis("Vertical");
 
+        if (Input.GetKeyDown(KeyCode.D)) _animator.SetTrigger("TurningRight");
+        if (Input.GetKeyUp(KeyCode.D)) _animator.SetTrigger("FromRightToDefault");
+        if (Input.GetKeyDown(KeyCode.A)) _animator.SetTrigger("TurningLeft");
+        if (Input.GetKeyUp(KeyCode.A)) _animator.SetTrigger("FromLeftToDefault");
+
+
         _direction = new Vector2(_userHorizontalInput, _userVerticalInput);
 
-        if (_sprint) transform.Translate(_direction * _speed * 2f * Time.deltaTime);
-        else transform.Translate(_direction * _speed * Time.deltaTime);
+        if (_sprint && _canMove) transform.Translate(_direction * _speed * 2f * Time.deltaTime);
+        else if (_canMove) transform.Translate(_direction * _speed * Time.deltaTime);
 
         _boundaries = new Vector2(Mathf.Clamp(transform.position.x, -9f, 9f), Mathf.Clamp(transform.position.y, -3f, 5f));
         transform.position = _boundaries;
     }
 
-    void Fire() {
+    void _Fire() {
         _playerAudioSource.clip = _laserSound;
         _ammoCount--;
         _uiManager.AmmoUpdate(_ammoCount);
-        _laserPosition = new Vector2(transform.position.x, transform.position.y + _laserOffset);
-        _trippleShotPos = new Vector2(transform.position.x + _tripleShotOffset, transform.position.y);
         _canFire = Time.time + _fireRate;
-        if (_isTripleShotOn == true)
-        {
-            GameObject newGameObject = Instantiate(_trippleShot, _laserPosition, Quaternion.identity);
-    
-        }
-        else {
-            GameObject newGameObject = Instantiate(_laser, _laserPosition, Quaternion.identity);
-            
-        }
-        _playerAudioSource.Play();
 
-        if (_ammoCount == 0) _spawnManager.SpawnAmmoSuply();
+        if (_ultraLaserOn) _ultraLaserVisual.SetActive(true);
+
+        else if (_isTripleShotOn)
+        {
+            _trippleShotPos = new Vector2(transform.position.x + _tripleShotOffset, transform.position.y);
+            _playerAudioSource.Play();
+            GameObject newGameObject = Instantiate(_trippleShot, _trippleShotPos, Quaternion.identity);
+        }
+        
+        else
+        {
+            _playerAudioSource.Play();
+            _laserPosition = new Vector2(transform.position.x, transform.position.y + _laserOffset);
+            GameObject newGameObject = Instantiate(_laser, _laserPosition, Quaternion.identity);
+        }
     }
 
     
 
-    void IsDeath()
+    void _IsDeath()
     {
         if (_health < 3) _fireRight.SetActive(true);
         if (_health < 2) _fireLeft.SetActive(true);
@@ -144,62 +167,65 @@ public class Player : MonoBehaviour
         }
     }
     
-    void SprintOn()
+    void _SprintOn()
     {
         StartCoroutine(TurnOffSprint());
         _canSprint = Time.time + _sprintRate;
         _sprint = true;
         _uiManager.SprintOn();
     }
-    void SprintOff()
+    void _SprintOff()
     {
         _sprint = false;
         _uiManager.SprintOff();
+    }
+
+    void _FindAndGetPowered() 
+    {
+        _powerUp = GameObject.FindGameObjectWithTag("PowerUp").GetComponent<PowerUp>();
+        if (_powerUp != null) _powerUp.PowerUpMagnet();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
 
         if (other.transform.tag == "obstacle"  && _isShieldOn == false) 
-        { 
-            _health -= 1; 
-            IsDeath();
-            _uiManager.LivesUpdate(_health); 
+        {
+            _DamageTaken();
+            _IsDeath();
         }
-        if (other.transform.tag == "obstacle") { _isShieldOn = false; _shieldVisual.SetActive(false);}
-        if (other.transform.tag == "ammoSuplly") { _ammoCount += 15; _uiManager.AmmoUpdate(_ammoCount);}
-        if (other.transform.tag == "healthPowerUp") _Regen();
-        if (other.transform.tag == "tripleShot") _TrippleShotActive();
-        if (other.transform.tag == "shield") _ShieldActive();
-        
+        if (other.transform.tag == "obstacle" && _isShieldOn) { _shields--; _ShieldCheck(); }
+        if (other.transform.name == "AmmoSupplyPowerUp(Clone)") { _ammoCount += 30; _uiManager.AmmoUpdate(_ammoCount);}
+        if (other.transform.name == "HealthPowerUp(Clone)") _Regen();
+        if (other.transform.name == "ShieldPowerUp(Clone)") _ShieldActive();
+        if (other.transform.name == "TrippleShotPowerUp(Clone)") StartCoroutine(TrippleShotEffect());
+        if (other.transform.name == "UltraLaserPowerUp(Clone)") StartCoroutine(_UltraLaserOn());
+        if (other.transform.name == "ElectroShock(Clone)") StartCoroutine(_ElectroShock());
     }
 
-    void _TrippleShotActive()
-    {
-        
-        
-        _isTripleShotOn = true;
-        StartCoroutine(TrippleShotEffect());
-    }
-
-    IEnumerator TrippleShotEffect()
-    {
-        yield return new WaitForSeconds(5);
-        _isTripleShotOn = false;
-    }
+    
+    
 
     void _ShieldActive()
     {
-
-        _isShieldOn = true;
-        _shieldVisual.SetActive(true);
+        _shields++;
+        _ShieldCheck();
     }
 
-    IEnumerator TurnOffSprint() 
+    void _ShieldCheck()
     {
-        yield return new WaitForSeconds (2f);
-        _uiManager.SprintOff();
-        _sprint = false;
+        if (_shields > 0)
+        {
+            _isShieldOn = true;
+            _shieldVisual.SetActive(true);
+            _uiManager.ShieldsUpdate(_shields);
+        }
+        else
+        {
+            _isShieldOn = false;
+            _shieldVisual.SetActive(false);
+            _uiManager.ShieldsUpdate(_shields);
+        }
     }
 
     void _Regen()
@@ -211,9 +237,51 @@ public class Player : MonoBehaviour
         if (_health == 3) _fireRight.SetActive(false);
     }
 
+    void _DamageTaken() {
+        _health -= 1;
+        _uiManager.LivesUpdate(_health);
+        _cameraScript.CameraShake();
+    }
+    IEnumerator TrippleShotEffect()
+    {
+        _isTripleShotOn = true;
+        yield return new WaitForSeconds(5);
+        _isTripleShotOn = false;
+    }
+    IEnumerator TurnOffSprint()
+    {
+        yield return new WaitForSeconds(2f);
+        _uiManager.SprintOff();
+        _sprint = false;
+    }
     IEnumerator RegenEffect() 
     {
         yield return new WaitForSeconds(0.5f);
         _regenEffect.SetActive(false);
+    }
+
+    IEnumerator _UltraLaserOn () {
+        _ultraLaserOn = true;
+        yield return new WaitForSeconds(5f);
+        _ultraLaserOn = false;
+        _ultraLaserVisual.SetActive(false);
+    }
+
+    IEnumerator AmmoSupplyRoutine ()
+    {
+        while (true) {
+            yield return new WaitForSeconds(1f);
+            if (_ammoCount == 0) _spawnManager.SpawnAmmoSuply();
+            yield return new WaitForSeconds(2f);
+        }
+    }
+
+    IEnumerator _ElectroShock() 
+    {
+        _canMove = false;
+        _electroShockEffect.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        _electroShockEffect.SetActive(false);
+        _canMove = true;
     }
 }

@@ -35,6 +35,10 @@ public class Asteroid : MonoBehaviour
             _livescount--;
             
         }
+        if (collision.tag == "Player")
+        {
+            _livescount--;
+        }
     }
 
     private void DestroyUs()

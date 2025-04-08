@@ -7,12 +7,9 @@ TagManager:
   - Undefined
   - laser
   - obstacle
-  - tripleShot
-  - speedPower
-  - shield
   - BossAtacks
-  - ammoSuplly
-  - healthPowerUp
+  - PowerUp
+  - PowerUpDestroyer
   layers:
   - Default
   - TransparentFX

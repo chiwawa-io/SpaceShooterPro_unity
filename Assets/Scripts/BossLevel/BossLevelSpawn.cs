@@ -17,7 +17,8 @@ public class BossLevelSpawn : MonoBehaviour
 
     void Start()
     {
-        StartWave();
+
+        StartCoroutine(SpawnPowerUpRoutine());
 
         Mathf.Clamp(_selectPowerUp, 0, 2);
     }
@@ -42,21 +43,4 @@ public class BossLevelSpawn : MonoBehaviour
         }
     }
 
-    
-    void Restart()
-    {
-        SceneManager.LoadScene(2); //current scene
-    }
-
-    public void StartWave()
-    {
-        StartCoroutine(StartWaveRoutine());
-    }
-
-    IEnumerator StartWaveRoutine()
-    {
-        yield return new WaitForSeconds(3f);
-
-        StartCoroutine(SpawnPowerUpRoutine());
-    }
 }

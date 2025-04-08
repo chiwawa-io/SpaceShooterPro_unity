@@ -46,11 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5142738e79b2574baf057901cfa917a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
+  _speed: 2
+  _sinFrequency: 3
+  _sinAmplitude: 2
   _laser: {fileID: 8854047573111746548, guid: 54d615fe2af26bd4fa4934a743555428, type: 3}
-  _enemyDestroyPrefab: {fileID: 5464994263537854932, guid: c2554a4ef4ba8c94ca16d59ea6b201cc,
+  _enemyDestroyPrefab: {fileID: 7060090004410931637, guid: 9a6a448cc36602b438a39a2f746f04f2,
     type: 3}
-  _canvas: {fileID: 0}
+  _uiManager: {fileID: 0}
 --- !u!50 &8012151134461851171
 Rigidbody2D:
   serializedVersion: 4
