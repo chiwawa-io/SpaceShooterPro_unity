@@ -13,7 +13,11 @@ public class EnemyShootingLasers : MonoBehaviour
     private GameObject _laser;
     [SerializeField]
     private GameObject _powerUpAttack;
+    private GameObject _playerAttack;
+    private Rigidbody2D _rb2d;
 
+    private float _previusSpeed;
+    private float _distanceSqr;
     private float _dotProductPlayerForward;
     [SerializeField]
     private float _speed = 5f;
@@ -23,21 +27,33 @@ public class EnemyShootingLasers : MonoBehaviour
     private int _ID = 0;
 
     private Vector3 _directionToPlayer;
+    private Vector2 _avoidDirection;
+    private Vector2 _deltaPosition;
+    private Vector2 _powerUpDestroyerLocalPosition;
 
     private bool _isPowerUpNear = false;
-    
+    private bool _avoidPlayerAttack = false;
+    private bool _basicMovement = true;
+    private bool _isNearLaser = false;
+
     void Start()
     {
         _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
         _player = GameObject.FindGameObjectWithTag("Player");
+        _rb2d = GetComponent<Rigidbody2D>();
 
         if (_uiManager == null) Debug.Log("UI manager on Enemy is null");
         if (_player == null) Debug.Log("Player on Smart Enemy is null");
+        if (_rb2d == null) Debug.Log("Rigidbody on Enemy is null");
 
         if (_ID == 1) StartCoroutine(ShootLaserForward());
         if (_ID == 2) StartCoroutine(_BehindPlayerCheck());
 
         StartCoroutine(_PowerUpNearCheck());
+        StartCoroutine(_PlayerAttackCheck());
+
+        _previusSpeed = _speed;
+        _powerUpDestroyerLocalPosition = _powerUpAttack.transform.localPosition;
     }
 
 
@@ -46,11 +62,21 @@ public class EnemyShootingLasers : MonoBehaviour
         if (_ID == 1) BasicMovement();
         if (_ID == 2) SmartEnemyMovement();
         
+        if (_isPowerUpNear) _powerUpAttack.transform.localPosition = new Vector2(0, -1.8f);
     }
 
+    private void FixedUpdate()
+    {
+        if (_avoidPlayerAttack)
+        {
+            if (_playerAttack != null) _avoidDirection = (_playerAttack.transform.position - transform.position).normalized;
+            _deltaPosition = _speed * _avoidDirection * Time.fixedDeltaTime;
+            _rb2d.MovePosition(_rb2d.position - _deltaPosition);
+        }
+    }
     void BasicMovement()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        if (_basicMovement) transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
         if (transform.position.y <= -4f)
         {
@@ -60,7 +86,7 @@ public class EnemyShootingLasers : MonoBehaviour
 
     void SmartEnemyMovement()
     {
-        transform.Translate(Vector3.up * _speed * Time.deltaTime);
+        if (_basicMovement) transform.Translate(Vector3.up * _speed * Time.deltaTime);
 
         if (transform.position.y <= -15f)
         {
@@ -84,12 +110,23 @@ public class EnemyShootingLasers : MonoBehaviour
             yield return new WaitForSeconds(1f);
             if (_player != null) _directionToPlayer = (_player.transform.position - transform.position).normalized;
             if (_player != null) _dotProductPlayerForward = Vector3.Dot(_directionToPlayer, _player.transform.right);
-            Debug.Log(_dotProductPlayerForward);
+            //Debug.Log(_dotProductPlayerForward);
 
             if (_dotProductPlayerForward <= 0.1f) Instantiate(_laser, transform.position, Quaternion.identity); //Debug.Log("Enemy when shoot: " + "X: " + transform.position.x + "Y: " + transform.position.y); 
             }
     }
-
+    IEnumerator _PlayerAttackCheck() {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            _playerAttack = GameObject.FindGameObjectWithTag("laser");
+            if (_playerAttack != null) { _distanceSqr = (_playerAttack.transform.position - transform.position).sqrMagnitude; _isNearLaser = _distanceSqr < 4f * 4f; } //Debug.Log(_playerAttack.transform.name); 
+            if (_isNearLaser) { _basicMovement = false; _avoidPlayerAttack = true; _speed = 5f; }
+            yield return new WaitForSeconds(0.2f);
+            _playerAttack = null; _isNearLaser = false; //Debug.Log("Player attack is null");
+            if (_playerAttack == null) _basicMovement = true; _avoidPlayerAttack = false; _speed = _previusSpeed;
+        }
+    }
     IEnumerator ShootLaserForward ()
     {
         while (true)
@@ -105,8 +142,8 @@ public class EnemyShootingLasers : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
             _powerUp = GameObject.FindGameObjectWithTag("PowerUp");
-            if (_powerUp != null) { _isPowerUpNear = (_powerUp.transform.position.x - transform.position.x < 5f) && (_powerUp.transform.position.y - transform.position.y < 5f); Debug.Log("PowerUp found"); }
-            if (_isPowerUpNear)  _powerUpAttack.SetActive(true);
+            if (_powerUp != null) { _isPowerUpNear = (_powerUp.transform.position.x - transform.position.x < 5f) && (_powerUp.transform.position.y - transform.position.y < 5f); } //Debug.Log("PowerUp found"); 
+            if (_isPowerUpNear) { _powerUpAttack.SetActive(true); } //Debug.Log("powerUp is near"); 
             yield return new WaitForSeconds(0.5f);
             _powerUpAttack.SetActive(false);
         }
