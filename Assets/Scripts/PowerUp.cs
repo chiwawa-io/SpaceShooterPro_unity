@@ -17,6 +17,8 @@ public class PowerUp : MonoBehaviour
     private bool _basicMovement = true;
     private bool _toPlayerMovement = false;
     private bool _isNearPlayer = false;
+
+    private float _distanceSqr;
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
@@ -46,18 +48,17 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        AudioSource.PlayClipAtPoint(_powerUpSound, transform.position);
-        if (collision.tag == "Player" ) Destroy(gameObject);
+
+        if (collision.tag == "Player") { Destroy(gameObject); AudioSource.PlayClipAtPoint(_powerUpSound, transform.position); }
         if (collision.tag == "PowerUpDestroyer") Destroy(gameObject);
     }
 
     public void PowerUpMagnet()
     {
-        _isNearPlayer = 
-            (_player.transform.position.x - transform.position.x < 3f) && (_player.transform.position.x - transform.position.x > -3f) &&
-            (_player.transform.position.x - transform.position.y < 3f) && (_player.transform.position.x - transform.position.y > -3f);
-        Debug.Log(_isNearPlayer);
-        if (_isNearPlayer) { _toPlayerMovement = true; _basicMovement = false; _speed = 10; }
+        _distanceSqr = (_player.transform.position - transform.position).sqrMagnitude;
+        _isNearPlayer = _distanceSqr < 4f * 4f; // Comparing squared distances
+        //_isNearPlayer = Vector3.Distance(_player.transform.position, transform.position) < 3f; Not working properly
+        if (_isNearPlayer) { _toPlayerMovement = true; _basicMovement = false; _speed = 10; Debug.Log("Magnetted"); }
         Debug.Log("PowerUpMagnet Called");
     }
 }
