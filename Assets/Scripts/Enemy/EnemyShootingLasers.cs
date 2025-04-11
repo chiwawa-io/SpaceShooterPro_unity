@@ -159,7 +159,7 @@ public class EnemyShootingLasers : MonoBehaviour
         }
         else if (other.transform.tag == "Player")
         {
-            _health--;
+            _health -= 3;
             _IsDeath();
         }
 

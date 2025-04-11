@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     private GameObject _laser;
     [SerializeField] 
     private GameObject _trippleShot;
+    [SerializeField]
+    private GameObject _rocket;
     [SerializeField] 
     private GameObject _shieldVisual;
     [SerializeField] 
@@ -41,6 +43,7 @@ public class Player : MonoBehaviour
     private GameObject _regenEffect;
     [SerializeField]
     private AudioClip _laserSound;
+    private AudioClip _rocketSound;
     private AudioSource _playerAudioSource;
     private UiManager _uiManager;
     private CameraScript _cameraScript;
@@ -67,7 +70,7 @@ public class Player : MonoBehaviour
     private bool _sprint = false;
     private bool _ultraLaserOn = false;
     private bool _canMove = true;
-
+    private bool _fireRocket = false;
 
     void Start()
     {
@@ -137,19 +140,25 @@ public class Player : MonoBehaviour
         _canFire = Time.time + _fireRate;
 
         if (_ultraLaserOn) _ultraLaserVisual.SetActive(true);
-
+        else if (_fireRocket)
+        {
+            _playerAudioSource.clip = _rocketSound;
+            _playerAudioSource.Play();
+            Instantiate(_rocket, transform.position, Quaternion.identity);
+            _fireRocket = false;
+        }
         else if (_isTripleShotOn)
         {
             _trippleShotPos = new Vector2(transform.position.x + _tripleShotOffset, transform.position.y);
             _playerAudioSource.Play();
-            GameObject newGameObject = Instantiate(_trippleShot, _trippleShotPos, Quaternion.identity);
+            Instantiate(_trippleShot, _trippleShotPos, Quaternion.identity);
         }
-        
+
         else
         {
             _playerAudioSource.Play();
             _laserPosition = new Vector2(transform.position.x, transform.position.y + _laserOffset);
-            GameObject newGameObject = Instantiate(_laser, _laserPosition, Quaternion.identity);
+            Instantiate(_laser, _laserPosition, Quaternion.identity);
         }
     }
 
@@ -201,6 +210,8 @@ public class Player : MonoBehaviour
         if (other.transform.name == "TrippleShotPowerUp(Clone)") StartCoroutine(TrippleShotEffect());
         if (other.transform.name == "UltraLaserPowerUp(Clone)") StartCoroutine(_UltraLaserOn());
         if (other.transform.name == "ElectroShock(Clone)") StartCoroutine(_ElectroShock());
+        if (other.transform.name == "RocketPowerUp(Clone)") _RocketPowerUp();
+       
     }
 
     
@@ -241,6 +252,10 @@ public class Player : MonoBehaviour
         _health -= 1;
         _uiManager.LivesUpdate(_health);
         _cameraScript.CameraShake();
+    }
+    void _RocketPowerUp ()
+    {
+        _fireRocket = true;
     }
     IEnumerator TrippleShotEffect()
     {
