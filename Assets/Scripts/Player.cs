@@ -166,9 +166,9 @@ public class Player : MonoBehaviour
 
     void _IsDeath()
     {
-        if (_health < 3) _fireRight.SetActive(true);
-        if (_health < 2) _fireLeft.SetActive(true);
-        if (_health <= 0)
+        if (Health < 3) _fireRight.SetActive(true);
+        if (Health < 2) _fireLeft.SetActive(true);
+        if (Health <= 0)
         {
             _spawnManager.StopSpawn();
             _gameManager.PlayerDead();
@@ -203,7 +203,7 @@ public class Player : MonoBehaviour
             _DamageTaken();
             _IsDeath();
         }
-        if (other.transform.tag == "obstacle" && _isShieldOn) { _shields--; _ShieldCheck(); }
+        if (other.transform.tag == "obstacle" && _isShieldOn) { Shields--; _ShieldCheck(); }
         if (other.transform.name == "AmmoSupplyPowerUp(Clone)") { _ammoCount += 30; _uiManager.AmmoUpdate(_ammoCount);}
         if (other.transform.name == "HealthPowerUp(Clone)") _Regen();
         if (other.transform.name == "ShieldPowerUp(Clone)") _ShieldActive();
@@ -219,24 +219,23 @@ public class Player : MonoBehaviour
 
     void _ShieldActive()
     {
-        Mathf.Clamp(_shields, 0, 3); // making shields limited to three
-        _shields++;
+        Shields++;
         _ShieldCheck();
     }
 
     void _ShieldCheck()
     {
-        if (_shields > 0)
+        if (Shields > 0)
         {
             _isShieldOn = true;
             _shieldVisual.SetActive(true);
-            _uiManager.ShieldsUpdate(_shields);
+            _uiManager.ShieldsUpdate(Shields);
         }
         else
         {
             _isShieldOn = false;
             _shieldVisual.SetActive(false);
-            _uiManager.ShieldsUpdate(_shields);
+            _uiManager.ShieldsUpdate(Shields);
         }
     }
 
@@ -244,21 +243,33 @@ public class Player : MonoBehaviour
     {
         _regenEffect.SetActive(true);
         StartCoroutine(RegenEffect());
-        if (_health < 3) _health++; _uiManager.LivesUpdate(_health);
-        if (_health == 2) _fireLeft.SetActive(false);
-        if (_health == 3) _fireRight.SetActive(false);
+        if (Health < 3) Health++; _uiManager.LivesUpdate(Health);
+        if (Health == 2) _fireLeft.SetActive(false);
+        if (Health == 3) _fireRight.SetActive(false);
     }
 
     void _DamageTaken() {
-        Mathf.Clamp(_health, 0, 3); // making health limited to three
-        _health -= 1;
-        _uiManager.LivesUpdate(_health);
+        Health -= 1;
+        _uiManager.LivesUpdate(Health);
         _cameraScript.CameraShake();
     }
     void _RocketPowerUp ()
     {
         _fireRocket = true;
     }
+
+    public int Health
+    {
+        get => _health;
+        set => _health = Mathf.Clamp(value, 0, 3);
+    }
+
+    public int Shields
+    {
+        get => _shields;
+        set => _shields = Mathf.Clamp(value, 0, 3);
+    }
+
     IEnumerator TrippleShotEffect()
     {
         _isTripleShotOn = true;
