@@ -23,7 +23,7 @@ public class UiManager : MonoBehaviour
     [SerializeField]
     private Image _sprint;
     [SerializeField]
-    private int _ammoCount = 15;
+    private int _ammoCount = 30;
     private int _scoreNum;
 
     void Start()

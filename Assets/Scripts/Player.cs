@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     private int _health = 3;
     private int _shields = 0;
     [SerializeField]
-    private int _ammoCount = 15;
+    private int _ammoCount = 30;
     [SerializeField]
     private float _laserOffset = 1.05f;
     [SerializeField]
