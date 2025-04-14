@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
         if (_playerAudioSource == null) Debug.Log("AudioSource on Player is null");
 
         StartCoroutine(AmmoSupplyRoutine());
-        Mathf.Clamp(_shields, 0, 3); // making shields limited to three
+        
     }
 
 
@@ -219,6 +219,7 @@ public class Player : MonoBehaviour
 
     void _ShieldActive()
     {
+        Mathf.Clamp(_shields, 0, 3); // making shields limited to three
         _shields++;
         _ShieldCheck();
     }
@@ -249,6 +250,7 @@ public class Player : MonoBehaviour
     }
 
     void _DamageTaken() {
+        Mathf.Clamp(_health, 0, 3); // making health limited to three
         _health -= 1;
         _uiManager.LivesUpdate(_health);
         _cameraScript.CameraShake();

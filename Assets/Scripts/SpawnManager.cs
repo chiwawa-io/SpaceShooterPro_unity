@@ -42,7 +42,7 @@ public class SpawnManager : MonoBehaviour
         if (_commonPowerUpArray == null) Debug.Log("_commonPowerUpArray on SpawnManager is NULL");
         if (_ammoPowerUp == null) Debug.Log("_ammoPowerUp on SpawnManager is NULL");
 
-        Mathf.Clamp(_selectPowerUp, 0, 1);
+
     }
 
     public void StopSpawn()
@@ -92,11 +92,11 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnCommonPowerUpRoutine()
     {
-        yield return new WaitForSeconds(Random.Range(7f, 10f));
+        yield return new WaitForSeconds(Random.Range(3f, 10f));
         while (!_stopSpawn)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            _selectPowerUp = Random.Range(0, 2);
+            _selectPowerUp = Random.Range(0,2);
             GameObject newGameObject = Instantiate(_commonPowerUpArray[_selectPowerUp], _spawnPos, Quaternion.identity);
             newGameObject.transform.parent = _powerUpContainer.transform;
             yield return new WaitForSeconds(Random.Range(5f,7f));
@@ -110,7 +110,7 @@ public class SpawnManager : MonoBehaviour
         while (!_stopSpawn)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            _selectPowerUp = Random.Range(0, 3);
+            _selectPowerUp = Random.Range(0, 4);
             GameObject newGameObject = Instantiate(_rarePowerUpArray[_selectPowerUp], _spawnPos, Quaternion.identity);
             newGameObject.transform.parent = _powerUpContainer.transform;
             yield return new WaitForSeconds(Random.Range(15f, 20f));
