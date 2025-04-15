@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class BossLevelSpawn : MonoBehaviour
 {
@@ -36,7 +34,7 @@ public class BossLevelSpawn : MonoBehaviour
         while (_stopSpawn == false)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            _selectPowerUp = Random.Range(0, 3);
+            _selectPowerUp = Random.Range(0, 2);
             GameObject newGameObject = Instantiate(_powerUpArray[_selectPowerUp], _spawnPos, Quaternion.identity);
             newGameObject.transform.parent = _powerUpContainer.transform;
             yield return new WaitForSeconds(Random.Range(3f, 7f));

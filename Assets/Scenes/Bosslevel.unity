@@ -851,7 +851,6 @@ MonoBehaviour:
   _powerUpContainer: {fileID: 1211811169}
   _powerUpArray:
   - {fileID: 4746685944645399894, guid: 75a4330a3a26d1c479d7ae4cf7701f07, type: 3}
-  - {fileID: 450921305044011835, guid: 5497d6bef86584f4d92544cb25ba040d, type: 3}
   - {fileID: 6577867693685291108, guid: ebb897ab15e93614b9b2c6e8f9fcd696, type: 3}
 --- !u!4 &1013217027
 Transform:

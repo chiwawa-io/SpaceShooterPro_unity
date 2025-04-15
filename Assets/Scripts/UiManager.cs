@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class UiManager : MonoBehaviour
 {
     [SerializeField]
-    private Text _scoreText;
+    private Text _scoreNumber;
     [SerializeField]
     private Sprite[] _liveSprites;
     [SerializeField]
@@ -28,14 +28,14 @@ public class UiManager : MonoBehaviour
 
     void Start()
     {
-        _scoreText.text = "Score: ";
-        _ammoText.text = "Ammo: " + _ammoCount;
+
+
 
         if (_liveSprites == null) Debug.Log("livesprites on Ui manager is null!");
         if (_gameOverText == null) Debug.Log("_gameOverText on Ui manager is null!");
         if (_restartText == null) Debug.Log("_restartText on UI manager is null!");
         if (_sprint == null) Debug.Log("_sprint on UI manager is null!");
-        if (_scoreText == null) Debug.Log("_scoreText on UI manager is null!");
+        if (_scoreNumber == null) Debug.Log("_scoreText on UI manager is null!");
         if (_ammoText == null) Debug.Log("_ammoText on UI manager is null!");
 
     }
@@ -43,13 +43,20 @@ public class UiManager : MonoBehaviour
     public void ScoreUpdate()
     {
         _scoreNum += 10;
-        _scoreText.text = "Score: " + _scoreNum;
+        _scoreNumber.text = "" + _scoreNum;
+        if (_scoreNum.ToString().Length == 2) _scoreNumber.transform.localPosition = new Vector3(13.34f, 199.59f, 0);
+        else if (_scoreNum.ToString().Length == 3) _scoreNumber.transform.localPosition = new Vector3(6.5f, 199.59f, 0);
+        else if (_scoreNum.ToString().Length == 4) _scoreNumber.transform.localPosition = new Vector3(1.06f, 199.59f, 0);
+
     }
 
     public void BigScoreUpdate()
     {
         _scoreNum += 30;
-        _scoreText.text = "Score: " + _scoreNum;
+        _scoreNumber.text = "" + _scoreNum;
+        if (_scoreNum.ToString().Length == 2) _scoreNumber.transform.localPosition = new Vector3(13.34f, 199.59f, 0);
+        else if (_scoreNum.ToString().Length == 3) _scoreNumber.transform.localPosition = new Vector3(7.08f, 199.59f, 0);
+        else if (_scoreNum.ToString().Length == 4) _scoreNumber.transform.localPosition = new Vector3(1.06f, 199.59f, 0);
     }
 
     public void LivesUpdate(int currentLives) {
@@ -63,7 +70,7 @@ public class UiManager : MonoBehaviour
     public void AmmoUpdate(int ammoNumber) 
     {
         _ammoCount = ammoNumber;
-        _ammoText.text = "Ammo: " + _ammoCount;
+        _ammoText.text = "" + _ammoCount;
     }
     public void SprintOn()
     {

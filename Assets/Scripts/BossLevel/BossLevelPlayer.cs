@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossLevelPlayer : MonoBehaviour
@@ -51,7 +50,7 @@ public class BossLevelPlayer : MonoBehaviour
         if (_canvasScript == null) Debug.Log("CanvasScript is null");
         if (_gameManager == null) Debug.Log("GameManager is null");
 
-        Mathf.Clamp(_shields, 0, 3f); // making shields limited to three
+
     }
 
 
@@ -124,9 +123,9 @@ public class BossLevelPlayer : MonoBehaviour
             _canvasScript.LivesUpdate(_health);
         }
         if (other.transform.tag == "BossAtacks" && _isShieldOn == true) { _shields--; _canvasScript.ShieldsUpdate(_shields); }
-        if (other.transform.tag == "tripleShot") _TrippleShotActive();
+        if (other.transform.name == "TrippleShotPowerUp(Clone)") _TrippleShotActive();
         if (other.transform.tag == "speedPower") _SpeedUpActive();
-        if (other.transform.tag == "shield") _ShieldActive();
+        if (other.transform.name == "ShieldPowerUp(Clone)") _ShieldActive();
     }
 
     void _TrippleShotActive()
