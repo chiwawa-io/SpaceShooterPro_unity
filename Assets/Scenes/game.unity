@@ -657,7 +657,6 @@ MonoBehaviour:
   _ammoCount: 30
   _laserOffset: 1.05
   _tripleShotOffset: 0.1
-  _laserContainer: {fileID: 1318687552}
   _laser: {fileID: 8854047573111746548, guid: 54d615fe2af26bd4fa4934a743555428, type: 3}
   _trippleShot: {fileID: 3534017936398347033, guid: f132420cdf930ff498cb477b09c431a8,
     type: 3}
@@ -671,6 +670,7 @@ MonoBehaviour:
   _laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _fireRate: 0.3
   _sprintRate: 3
+  _bossMode: 0
 --- !u!212 &890718123
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2088,6 +2088,7 @@ MonoBehaviour:
   _ammoText: {fileID: 1172611663}
   _sprint: {fileID: 1278748398}
   _ammoCount: 30
+  _bossMode: 0
 --- !u!4 &1495654214
 Transform:
   m_ObjectHideFlags: 0

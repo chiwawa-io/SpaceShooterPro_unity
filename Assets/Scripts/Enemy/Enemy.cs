@@ -12,32 +12,30 @@ public class Enemy : MonoBehaviour
     private Vector2 _direction;
     private Vector2 _deltaPosition;
 
-
-    [SerializeField]
-    private GameObject _laser;
     [SerializeField]
     private GameObject _enemyDestroyPrefab;
-    [SerializeField]
     private UiManager _uiManager;
-    [SerializeField]
     private GameObject _player;
     private Rigidbody2D _rb2d;
 
     [SerializeField]
     private int _randomMovement = 0;
     private bool _offensiveMode = false;
+    [SerializeField]
+    private bool _bossMode = false;
 
     void Start()
     {
         _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
-        _player = GameObject.FindGameObjectWithTag("Player");
-        _rb2d = GetComponent<Rigidbody2D>();
+        if (!_bossMode) _player = GameObject.FindGameObjectWithTag("Player");
+        if (!_bossMode) _rb2d = GetComponent<Rigidbody2D>();
 
         if (_uiManager == null) Debug.Log("UI manager on Enemy is null");
-        if (_player == null) Debug.Log("Player on Enemy is null");
-        if (_rb2d == null) Debug.Log("Rigidbody on Enemy is null");
+        if (_player == null && !_bossMode) Debug.Log("Player on Enemy is null");
+        if (_rb2d == null && !_bossMode) Debug.Log("Rigidbody on Enemy is null");
 
-        _randomMovement = Random.Range(1, 5);
+        if (!_bossMode) _randomMovement = Random.Range(1, 5);
+        else _randomMovement = 1;
 
         if (_randomMovement == 2) transform.Rotate(0, 0, 20f);
         if (_randomMovement == 1) transform.Rotate(0, 0, -20f);

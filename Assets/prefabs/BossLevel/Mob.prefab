@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 886916968141777023}
   - component: {fileID: 7000207012904128570}
   - component: {fileID: 5979843129223690868}
-  - component: {fileID: -5593668788553072585}
+  - component: {fileID: 1674418207402962048}
   m_Layer: 0
   m_Name: Mob
-  m_TagString: BossAtacks
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1928515289
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3154912113cbb4a498df6f571c74e18c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -131,7 +131,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-5593668788553072585
+--- !u!114 &1674418207402962048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,8 +140,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6166937236323244605}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96d90a8d52ab3e243882571b766cb48a, type: 3}
+  m_Script: {fileID: 11500000, guid: b5142738e79b2574baf057901cfa917a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyDestroyPrefab: {fileID: 521755031736437358, guid: 0b20cbb11ab1cc548b5818e7d8f3a4c5,
+  _speed: 5
+  _sinFrequency: 3
+  _sinAmplitude: 3
+  _enemyDestroyPrefab: {fileID: 7060090004410931637, guid: 9a6a448cc36602b438a39a2f746f04f2,
     type: 3}
+  _randomMovement: 0
+  _bossMode: 1

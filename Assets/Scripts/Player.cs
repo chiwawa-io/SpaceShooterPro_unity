@@ -22,8 +22,6 @@ public class Player : MonoBehaviour
     private Game_manager _gameManager;
     private SpawnManager _spawnManager;
     [SerializeField]
-    private GameObject _laserContainer;
-    [SerializeField]
     private GameObject _laser;
     [SerializeField] 
     private GameObject _trippleShot;
@@ -71,22 +69,23 @@ public class Player : MonoBehaviour
     private bool _ultraLaserOn = false;
     private bool _canMove = true;
     private bool _fireRocket = false;
+    [SerializeField]
+    private bool _bossMode = false;
 
     void Start()
     {
-        transform.position = new Vector3(0,0,0);
+        if (!_bossMode) transform.position = new Vector3(0,0,0);
         _playerAudioSource = GetComponent<AudioSource>();
         _uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
         _spawnManager = GameObject.Find("Spawn_manager").GetComponent<SpawnManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<Game_manager>();
         _cameraScript = GameObject.Find("Main Camera").GetComponent<CameraScript>();
-        _animator = GetComponent<Animator>();
+        //_animator = GetComponent<Animator>();
 
         if (_spawnManager == null) Debug.Log("Spawn manager on Player is null");
         if (_gameManager == null) Debug.Log("_game_Manager on Player is null");
-        if (_animator == null) Debug.Log("animator on Player is null");
+        //if (_animator == null) Debug.Log("animator on Player is null");
         
-        if (_laserContainer == null) Debug.Log("_laserContainer on Player is null");
         if (_laser == null) Debug.Log("_laser on Player is null");
         if (_trippleShot == null) Debug.Log("_trippleShot on Player is null");
         if (_shieldVisual == null) Debug.Log("_shieldVisual on Player is null");
@@ -118,10 +117,10 @@ public class Player : MonoBehaviour
         _userHorizontalInput = Input.GetAxis("Horizontal");
         _userVerticalInput = Input.GetAxis("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.D)) _animator.SetTrigger("TurningRight");
-        if (Input.GetKeyUp(KeyCode.D)) _animator.SetTrigger("FromRightToDefault");
-        if (Input.GetKeyDown(KeyCode.A)) _animator.SetTrigger("TurningLeft");
-        if (Input.GetKeyUp(KeyCode.A)) _animator.SetTrigger("FromLeftToDefault");
+        //if (Input.GetKeyDown(KeyCode.D)) _animator.SetTrigger("TurningRight");
+        //if (Input.GetKeyUp(KeyCode.D)) _animator.SetTrigger("FromRightToDefault");
+        //if (Input.GetKeyDown(KeyCode.A)) _animator.SetTrigger("TurningLeft");
+        //if (Input.GetKeyUp(KeyCode.A)) _animator.SetTrigger("FromLeftToDefault");
 
 
         _direction = new Vector2(_userHorizontalInput, _userVerticalInput);
@@ -136,7 +135,7 @@ public class Player : MonoBehaviour
     void _Fire() {
         _playerAudioSource.clip = _laserSound;
         _ammoCount--;
-        _uiManager.AmmoUpdate(_ammoCount);
+        if (!_bossMode)_uiManager.AmmoUpdate(_ammoCount);
         _canFire = Time.time + _fireRate;
 
         if (_ultraLaserOn) _ultraLaserVisual.SetActive(true);

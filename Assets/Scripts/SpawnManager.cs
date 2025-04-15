@@ -53,6 +53,7 @@ public class SpawnManager : MonoBehaviour
         
         while (_stopSpawn == false)
         {
+            yield return new WaitForSeconds(_enemySpawnInterval);
             _enemyCount += 0.5f;
             _enemySpawnInterval += 0.3f;
             Debug.Log("Enemy count: " + _enemyCount);
@@ -62,7 +63,6 @@ public class SpawnManager : MonoBehaviour
                 GameObject newGameObject = Instantiate(_enemy, _spawnPos, Quaternion.identity);
                 newGameObject.transform.parent = _enemyContainer.transform;
             }
-            yield return new WaitForSeconds(_enemySpawnInterval);
             
         }
     }

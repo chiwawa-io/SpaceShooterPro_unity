@@ -26,19 +26,19 @@ public class UiManager : MonoBehaviour
     private int _ammoCount = 30;
     private int _scoreNum;
 
+    [SerializeField]
+    private bool _bossMode = false;
+
     void Start()
     {
-
-
-
         if (_liveSprites == null) Debug.Log("livesprites on Ui manager is null!");
         if (_gameOverText == null) Debug.Log("_gameOverText on Ui manager is null!");
         if (_restartText == null) Debug.Log("_restartText on UI manager is null!");
         if (_sprint == null) Debug.Log("_sprint on UI manager is null!");
-        if (_scoreNumber == null) Debug.Log("_scoreText on UI manager is null!");
-        if (_ammoText == null) Debug.Log("_ammoText on UI manager is null!");
-
+        if (!_bossMode && _scoreNumber == null) Debug.Log("_scoreText on UI manager is null!");
+        if (!_bossMode && _ammoText == null) Debug.Log("_ammoText on UI manager is null!");
     }
+
 
     public void ScoreUpdate()
     {
@@ -83,6 +83,10 @@ public class UiManager : MonoBehaviour
     public void ShieldsUpdate(int currentShields)
     {
         _shieldsImg.sprite = _shieldSprites[currentShields];
+    }
+    public void BossHpUpdate()
+    {
+
     }
 }
 
