@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 480474562591016418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.444, y: 4.804, z: -3.8682222}
-  m_LocalScale: {x: 0.7719634, y: 0.7719634, z: 0.7719634}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -49,12 +49,10 @@ MonoBehaviour:
   _speed: 2
   _sinFrequency: 3
   _sinAmplitude: 2
-  _laser: {fileID: 8854047573111746548, guid: 54d615fe2af26bd4fa4934a743555428, type: 3}
   _enemyDestroyPrefab: {fileID: 7060090004410931637, guid: 9a6a448cc36602b438a39a2f746f04f2,
     type: 3}
-  _uiManager: {fileID: 0}
-  _player: {fileID: 0}
   _randomMovement: 0
+  _bossMode: 0
 --- !u!50 &8012151134461851171
 Rigidbody2D:
   serializedVersion: 4
@@ -120,7 +118,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.12, y: 5.12}
+  m_Size: {x: 20.48, y: 20.48}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -139,16 +137,16 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.008018404, y: 0.032571316}
+  m_Offset: {x: 0.007936478, y: 0.04573822}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
-    newSize: {x: 5.12, y: 5.12}
+    oldSize: {x: 20.48, y: 20.48}
+    newSize: {x: 20.48, y: 20.48}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1434276, y: 2.7878876}
+  m_Size: {x: 4.357853, y: 11.185211}
   m_EdgeRadius: 0
