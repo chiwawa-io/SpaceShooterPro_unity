@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosion : MonoBehaviour
+public class DestroyAfter3Sec : MonoBehaviour
 {
     private AudioSource _audioSource;
     void Start()
@@ -13,6 +13,7 @@ public class Explosion : MonoBehaviour
     IEnumerator DestroyUs ()
     {
         yield return new WaitForSeconds(2.35f);
+        if (transform.parent != null) Destroy(transform.parent.gameObject);
         Destroy(gameObject);
     }
 }

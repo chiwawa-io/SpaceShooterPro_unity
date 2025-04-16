@@ -148,7 +148,7 @@ public class Player : MonoBehaviour
         }
         else if (_isTripleShotOn)
         {
-            _trippleShotPos = new Vector2(transform.position.x + _tripleShotOffset, transform.position.y);
+            _trippleShotPos = new Vector2(transform.position.x, transform.position.y + _tripleShotOffset);
             _playerAudioSource.Play();
             Instantiate(_trippleShot, _trippleShotPos, Quaternion.identity);
         }

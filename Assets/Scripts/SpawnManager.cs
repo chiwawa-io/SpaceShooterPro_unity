@@ -23,7 +23,10 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject[] _rarePowerUpArray;
 
+    [SerializeField]
     private bool _stopSpawn = false;
+    [SerializeField]
+    private bool _bossMode = false;
 
     private Vector2 _spawnPos;
 
@@ -40,7 +43,11 @@ public class SpawnManager : MonoBehaviour
         if (_commonPowerUpArray == null) Debug.Log("_commonPowerUpArray on SpawnManager is NULL");
         if (_ammoPowerUp == null) Debug.Log("_ammoPowerUp on SpawnManager is NULL");
 
-
+        if (_bossMode)
+        {
+            StartCoroutine(SpawnRarePowerUpRoutine());
+            StartCoroutine(SpawnCommonPowerUpRoutine());
+        }
     }
 
     public void StopSpawn()
@@ -108,7 +115,8 @@ public class SpawnManager : MonoBehaviour
         while (!_stopSpawn)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            _selectPowerUp = Random.Range(0, 4);
+            if (!_bossMode) _selectPowerUp = Random.Range(0, 2);
+            else _selectPowerUp = 0;
             GameObject newGameObject = Instantiate(_rarePowerUpArray[_selectPowerUp], _spawnPos, Quaternion.identity);
             newGameObject.transform.parent = _powerUpContainer.transform;
             yield return new WaitForSeconds(Random.Range(15f, 20f));

@@ -17,11 +17,19 @@ public class UiManager : MonoBehaviour
     [SerializeField]
     private Text _gameOverText;
     [SerializeField]
+    private Text _roundWonText;
+    [SerializeField]
     private Text _restartText;
     [SerializeField] 
     private Text _ammoText;
     [SerializeField]
     private Image _sprint;
+
+    [SerializeField]
+    private Image _bossHpBarImage;
+    [SerializeField] 
+    private Sprite[] _bossHpLineSprites;
+
     [SerializeField]
     private int _ammoCount = 30;
     private int _scoreNum;
@@ -84,9 +92,14 @@ public class UiManager : MonoBehaviour
     {
         _shieldsImg.sprite = _shieldSprites[currentShields];
     }
-    public void BossHpUpdate()
+    public void BossHpUpdate(int currentHpPercentage)
     {
-
+        _bossHpBarImage.sprite = _bossHpLineSprites[currentHpPercentage];
+    }
+    public void RoundWon ()
+    {
+        _roundWonText.gameObject.SetActive(true);
+        _restartText.gameObject.SetActive(true);
     }
 }
 

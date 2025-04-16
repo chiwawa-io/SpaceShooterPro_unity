@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour
         if (_rb2d == null && !_bossMode) Debug.Log("Rigidbody on Enemy is null");
 
         if (!_bossMode) _randomMovement = Random.Range(1, 5);
-        else _randomMovement = 1;
+        else _randomMovement = 0;
 
         if (_randomMovement == 2) transform.Rotate(0, 0, 20f);
         if (_randomMovement == 1) transform.Rotate(0, 0, -20f);
@@ -83,13 +83,13 @@ public class Enemy : MonoBehaviour
     {
         if (other.transform.tag== "laser")
         {
-            _uiManager.ScoreUpdate();
+            if(!_bossMode) _uiManager.ScoreUpdate();
             Instantiate(_enemyDestroyPrefab, transform.position, Quaternion.identity);
             Destroy (other.gameObject);
             Destroy(gameObject);
         }
         else if (other.transform.tag == "Player") {
-            _uiManager.ScoreUpdate();
+            if (!_bossMode) _uiManager.ScoreUpdate();
             Instantiate(_enemyDestroyPrefab, transform.position, Quaternion.identity);
             Destroy (gameObject);
         }

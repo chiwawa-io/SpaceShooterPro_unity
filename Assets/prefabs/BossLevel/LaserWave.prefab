@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 332117556688690044}
   - component: {fileID: 1866844178136297300}
   - component: {fileID: 7887868086783473458}
-  - component: {fileID: -8379712030681906884}
+  - component: {fileID: -5282735870491927641}
   m_Layer: 0
   m_Name: LaserWave
-  m_TagString: BossAtacks
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1928515289
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: b030d335857201646be69703e678d6e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -115,7 +115,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.00003015995, y: 0.03223014}
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3981645, y: 2.7290454}
   m_EdgeRadius: 0
---- !u!114 &-8379712030681906884
+--- !u!114 &-5282735870491927641
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,6 +140,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1188226976209104975}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a793b8f7879702f4e99fd3d5d9389cf4, type: 3}
+  m_Script: {fileID: 11500000, guid: d8b01b5670c8f6049a04f4da526d1324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 1440146000054309743}
   - component: {fileID: 5047245469802445097}
   - component: {fileID: 1811445493768409332}
-  - component: {fileID: 6900210368863608165}
+  - component: {fileID: 767144074808452979}
   m_Layer: 0
   m_Name: DriftingMobsLeft
-  m_TagString: BossAtacks
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,9 +71,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1928515289
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 72fa818d45dda4ee998bda50180f1e96, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -95,7 +95,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.00004506111, y: 0.006587267}
@@ -151,7 +151,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6900210368863608165
+--- !u!114 &767144074808452979
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,6 +160,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8256389323452887499}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b8c397d13ab07544808aa88759bc67f, type: 3}
+  m_Script: {fileID: 11500000, guid: d8b01b5670c8f6049a04f4da526d1324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

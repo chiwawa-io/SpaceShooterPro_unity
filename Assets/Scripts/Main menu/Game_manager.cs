@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class Game_manager : MonoBehaviour
 {
     private bool _playerDead = false;
+    private bool _roundWon = false;
     private int _sceneId;
 
 
@@ -14,12 +15,19 @@ public class Game_manager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKey(KeyCode.R) && _playerDead == true) Restart();
+        if (Input.GetKey(KeyCode.R) && _roundWon == true) Restart();
         if (Input.GetKey(KeyCode.Escape)) Application.Quit();
     }
     public void PlayerDead() 
     {
         _playerDead= true;
     }
+
+    public void RoundWon ()
+    {
+        _roundWon = true;
+    }
+
     public void NewGameButton () 
     {
         SceneManager.LoadScene(1);
