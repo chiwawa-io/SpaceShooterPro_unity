@@ -115,11 +115,11 @@ public class SpawnManager : MonoBehaviour
         while (!_stopSpawn)
         {
             _spawnPos = new Vector2(Random.Range(-8f, 8f), 7f);
-            if (!_bossMode) _selectPowerUp = Random.Range(0, 2);
+            if (!_bossMode) _selectPowerUp = Random.Range(0, 4);
             else _selectPowerUp = 0;
             GameObject newGameObject = Instantiate(_rarePowerUpArray[_selectPowerUp], _spawnPos, Quaternion.identity);
             newGameObject.transform.parent = _powerUpContainer.transform;
-            yield return new WaitForSeconds(Random.Range(15f, 20f));
+            yield return new WaitForSeconds(Random.Range(5f, 10f));
         }
     }
 

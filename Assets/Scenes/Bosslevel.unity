@@ -273,7 +273,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.4, y: 35.273}
+  m_AnchoredPosition: {x: -14.5, y: 33.8}
   m_SizeDelta: {x: 431.76187, y: 70.54644}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &335342877
@@ -308,14 +308,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.16470575, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 7c97d29ccba4fbd458621b49bae36f6e, type: 3}
+    m_Font: {fileID: 12800000, guid: fa8dec8552594d942bf9efaaf3e6c7b5, type: 3}
     m_FontSize: 70
     m_FontStyle: 0
     m_BestFit: 0
@@ -723,7 +723,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 92, y: 422.65}
+  m_AnchoredPosition: {x: 96.7, y: 18.2}
   m_SizeDelta: {x: 153.03268, y: 153.03268}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &757871970
@@ -945,8 +945,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -332.92, y: 112.4}
-  m_SizeDelta: {x: 103.18591, y: 92.37196}
+  m_AnchoredPosition: {x: -300.73, y: -156}
+  m_SizeDelta: {x: 158.17822, y: 134.40796}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1038440054
 Animator:
@@ -1381,8 +1381,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 79.253, y: -67.6}
-  m_SizeDelta: {x: 131.8914, y: 85.44627}
+  m_AnchoredPosition: {x: 97.15, y: -407.47}
+  m_SizeDelta: {x: 152.13191, y: 85.44627}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1381788978
 MonoBehaviour:
@@ -1403,7 +1403,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 316a1696b047d71428a4953223fbbdaf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5d79c6630b5c7c345976fce468b82cfe, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2125,10 +2125,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1e98726fee1636e4293eea531adead40, type: 3}
   _livesImg: {fileID: 632185130}
   _shieldSprites:
-  - {fileID: 21300000, guid: 316a1696b047d71428a4953223fbbdaf, type: 3}
-  - {fileID: 21300000, guid: 0c8893d61181ffe4d8b84f0d87fdf498, type: 3}
-  - {fileID: 21300000, guid: 09ed69934eba7a64fbabf3ed5fc47189, type: 3}
-  - {fileID: 21300000, guid: aa33d7bafa9668e48ac969fd5aeb15b4, type: 3}
+  - {fileID: 21300000, guid: 5d79c6630b5c7c345976fce468b82cfe, type: 3}
+  - {fileID: 21300000, guid: bc7bdd6b6ed8d2847a25431aa313abc4, type: 3}
+  - {fileID: 21300000, guid: c5c74acf39062524d84f4a5a31f1c030, type: 3}
+  - {fileID: 21300000, guid: 7e702a7fe9c0b09439211878062d272d, type: 3}
   _shieldsImg: {fileID: 1381788978}
   _gameOverText: {fileID: 335342878}
   _roundWonText: {fileID: 1839335918}
